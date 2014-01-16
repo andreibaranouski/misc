@@ -1,0 +1,774 @@
+andrey@baranouski:~/couchbase_source/cblite-tests$ CONF_FILE='local_android' node tests/cbl-replication.js 
+http server started on: http://127.0.0.1:8189
+LiteServAndroid launched on 8080
+TAP version 13
+# start test client
+ok 1 no error, LiteServe running on our port
+running /home/andrey/couchbase_source/sync_gateway/bin/sync_gateway [ '-interface',
+  ':9888',
+  '-adminInterface',
+  ':9889',
+  '-url',
+  'walrus:',
+  '-bucket',
+  'db',
+  '/home/andrey/couchbase_source/cblite-tests/config/admin_party.json' ]
+19:34:53.521924 Enabling logging: [CRUD REST+]
+19:34:53.521975 Configured Go to use all 4 CPUs; setenv GOMAXPROCS to override this
+19:34:53.521990 Opening db /db as bucket "db", pool "default", server <walrus:>
+19:34:53.522027 Opening Walrus database db on <walrus:>
+19:34:53.522614     Reset guest user to config
+19:34:53.522627 Starting admin server on :9889
+19:34:53.523946 Starting server on :9888 ...
+19:34:54.708702 HTTP:  #001: GET /db/
+# start syncgateway
+ok 2 no error, Sync Gateway running on our port
+ok 3 no error, Sync Gateway reachable
+# create test databases
+Skipping local replication on Android
+# set up local to local replication
+# set push/pull replication to gateway
+ok 4 { _replicate: 'api-test1 -> http://10.0.2.2:9888/db' }
+ok 5 { _replicate: 'api-test2 -> http://10.0.2.2:9888/db' }
+ok 6 { _replicate: 'api-test3 -> http://10.0.2.2:9888/db' }
+ok 7 { _replicate: 'api-test7 <- http://10.0.2.2:9888/db' }
+ok 8 { _replicate: 'api-test8 <- http://10.0.2.2:9888/db' }
+ok 9 { _replicate: 'api-test9 <- http://10.0.2.2:9888/db' }
+ok 10 setup push pull replication to gateway
+19:34:58.455413 HTTP:  #002: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000
+19:34:58.535287 HTTP:  #003: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000
+19:34:58.577349 HTTP:  #004: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000
+19:34:59.731647 HTTP:  #005: POST /db/_revs_diff
+19:34:59.822541 HTTP:  #006: POST /db/_revs_diff
+# load databases
+ok 11 docid
+ok 12 docid
+ok 13 docid
+ok 14 docid
+ok 15 docid
+ok 16 docid
+ok 17 docid
+ok 18 docid
+ok 19 docid
+ok 20 docid
+ok 21 docid
+ok 22 docid
+ok 23 docid
+ok 24 docid
+ok 25 docid
+ok 26 docid
+ok 27 docid
+ok 28 docid
+ok 29 docid
+ok 30 docid
+ok 31 docid
+ok 32 docid
+ok 33 docid
+ok 34 docid
+ok 35 docid
+ok 36 docid
+ok 37 docid
+ok 38 docid
+ok 39 docid
+ok 40 docid
+Skipping local replication on Android
+# verify local-replicated dbs changefeed
+Skipping local replication on Android
+# verify local-replicated num-docs10
+Skipping local replication on Android
+# verify sg-replicated dbs loaded
+Skipping local replication on Android
+# verify sg-replicated num-docs
+19:35:00.668491 HTTP:  #007: POST /db/_bulk_docs
+19:35:00.757039 CRUD: Stored doc "api-test1_0" / "1-e419fc10-30cb-480e-804c-00837e94de1d"
+19:35:00.757506 CRUD: Stored doc "api-test1_2" / "1-a53fc496-231b-4a50-bebe-0218fa266303"
+19:35:00.757674 CRUD: Stored doc "api-test1_3" / "1-3fe3a461-5e1b-45d4-82a6-48e9e60b4565"
+19:35:00.757834 CRUD: Stored doc "api-test1_4" / "1-1141cfaf-59b2-471c-906d-b1440d539bfc"
+19:35:00.758001 CRUD: Stored doc "api-test1_5" / "1-d15d42a6-0c9c-4e18-83c5-689a37fbec31"
+19:35:00.758150 CRUD: Stored doc "api-test1_1" / "1-070afe80-2b0c-412b-9407-ab29f86492c6"
+19:35:00.758276 CRUD: Stored doc "api-test1_6" / "1-b22acb9a-855f-48b2-a0fd-06d23f42e9d5"
+19:35:00.758436 CRUD: Stored doc "api-test1_7" / "1-e89faa53-6a88-4a71-a72a-e20fb40a84d8"
+19:35:00.758572 CRUD: Stored doc "api-test1_8" / "1-9af8e941-058f-4e43-b81b-d76a632db75d"
+19:35:00.758697 CRUD: Stored doc "api-test1_9" / "1-f349e880-38f5-41bd-8f95-a4287a0c4d01"
+19:35:00.792496 HTTP:  #008: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A1
+19:35:00.836310 HTTP:  #009: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A1
+19:35:00.874782 HTTP:  #010: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A1
+19:35:00.959041 HTTP:  #011: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A10
+19:35:00.995568 HTTP:  #012: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A10
+19:35:01.028516 HTTP:  #013: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A10
+19:35:01.623567 HTTP:  #014: POST /db/_bulk_docs
+19:35:01.625076 CRUD: Stored doc "api-test2_0" / "1-82897779-842e-4b11-93dd-35bd023a7ed4"
+19:35:01.625258 CRUD: Stored doc "api-test2_1" / "1-b96f21b0-0261-402f-ab60-7f664c9fb064"
+19:35:01.625425 CRUD: Stored doc "api-test2_2" / "1-1bf3caa1-4b07-458a-b3e8-229c8004de35"
+19:35:01.625611 CRUD: Stored doc "api-test2_3" / "1-7af35d36-e479-4e7b-a18f-2b9c90aaf071"
+19:35:01.625769 CRUD: Stored doc "api-test2_4" / "1-0bbc3d1e-038a-419b-87fd-f39fefc66967"
+19:35:01.625944 CRUD: Stored doc "api-test2_5" / "1-2aa89319-fe99-4a19-a37d-1f365cfeae5f"
+19:35:01.626082 CRUD: Stored doc "api-test2_6" / "1-be278196-bbc3-452e-bfa0-5effce1c6b0a"
+19:35:01.626239 CRUD: Stored doc "api-test2_7" / "1-de33342d-1f0d-4442-bce1-4f05d19e1df1"
+19:35:01.626383 CRUD: Stored doc "api-test2_8" / "1-c8db4142-c661-492b-92df-0a7c03669ba6"
+19:35:01.699770 HTTP:  #015: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A11
+19:35:01.715358 HTTP:  #016: POST /db/_revs_diff
+19:35:01.718455 HTTP:  #017: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A11
+19:35:01.811929 HTTP:  #018: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A11
+19:35:01.846853 HTTP:  #019: POST /db/_revs_diff
+19:35:01.886605 HTTP:  #020: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A19
+19:35:01.947340 HTTP:  #021: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A19
+19:35:01.963672 HTTP:  #022: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A19
+19:35:02.051395 HTTP:  #023: GET /db/api-test1_0?rev=1-e419fc10-30cb-480e-804c-00837e94de1d&revs=true&attachments=true
+19:35:02.107949 HTTP:  #024: GET /db/api-test1_2?rev=1-a53fc496-231b-4a50-bebe-0218fa266303&revs=true&attachments=true
+19:35:02.149862 HTTP:  #025: GET /db/api-test1_4?rev=1-1141cfaf-59b2-471c-906d-b1440d539bfc&revs=true&attachments=true
+19:35:02.207656 HTTP:  #026: GET /db/api-test1_3?rev=1-3fe3a461-5e1b-45d4-82a6-48e9e60b4565&revs=true&attachments=true
+19:35:02.255914 HTTP:  #027: GET /db/api-test1_1?rev=1-070afe80-2b0c-412b-9407-ab29f86492c6&revs=true&attachments=true
+19:35:02.305679 HTTP:  #028: GET /db/api-test1_5?rev=1-d15d42a6-0c9c-4e18-83c5-689a37fbec31&revs=true&attachments=true
+19:35:02.336391 HTTP:  #029: GET /db/api-test1_7?rev=1-e89faa53-6a88-4a71-a72a-e20fb40a84d8&revs=true&attachments=true
+19:35:02.344980 HTTP:  #030: GET /db/api-test1_6?rev=1-b22acb9a-855f-48b2-a0fd-06d23f42e9d5&revs=true&attachments=true
+19:35:02.445332 HTTP:  #031: GET /db/api-test1_8?rev=1-9af8e941-058f-4e43-b81b-d76a632db75d&revs=true&attachments=true
+19:35:02.454598 HTTP:  #032: GET /db/api-test2_0?rev=1-82897779-842e-4b11-93dd-35bd023a7ed4&revs=true&attachments=true
+19:35:02.456528 HTTP:  #033: GET /db/api-test1_9?rev=1-f349e880-38f5-41bd-8f95-a4287a0c4d01&revs=true&attachments=true
+19:35:02.543219 HTTP:  #034: GET /db/api-test1_0?rev=1-e419fc10-30cb-480e-804c-00837e94de1d&revs=true&attachments=true
+19:35:02.631949 HTTP:  #035: GET /db/api-test1_2?rev=1-a53fc496-231b-4a50-bebe-0218fa266303&revs=true&attachments=true
+19:35:02.678925 HTTP:  #036: GET /db/api-test1_3?rev=1-3fe3a461-5e1b-45d4-82a6-48e9e60b4565&revs=true&attachments=true
+19:35:02.682100 HTTP:  #037: GET /db/api-test1_4?rev=1-1141cfaf-59b2-471c-906d-b1440d539bfc&revs=true&attachments=true
+19:35:02.781405 HTTP:  #038: GET /db/api-test1_5?rev=1-d15d42a6-0c9c-4e18-83c5-689a37fbec31&revs=true&attachments=true
+19:35:02.809533 HTTP:  #039: GET /db/api-test1_1?rev=1-070afe80-2b0c-412b-9407-ab29f86492c6&revs=true&attachments=true
+19:35:02.846506 HTTP:  #040: GET /db/api-test1_6?rev=1-b22acb9a-855f-48b2-a0fd-06d23f42e9d5&revs=true&attachments=true
+19:35:02.855655 HTTP:  #041: GET /db/api-test1_8?rev=1-9af8e941-058f-4e43-b81b-d76a632db75d&revs=true&attachments=true
+19:35:02.905890 HTTP:  #042: GET /db/api-test1_7?rev=1-e89faa53-6a88-4a71-a72a-e20fb40a84d8&revs=true&attachments=true
+19:35:02.956618 HTTP:  #043: GET /db/api-test1_9?rev=1-f349e880-38f5-41bd-8f95-a4287a0c4d01&revs=true&attachments=true
+19:35:02.999494 HTTP:  #044: GET /db/api-test2_0?rev=1-82897779-842e-4b11-93dd-35bd023a7ed4&revs=true&attachments=true
+19:35:03.015630 HTTP:  #045: GET /db/api-test2_1?rev=1-b96f21b0-0261-402f-ab60-7f664c9fb064&revs=true&attachments=true
+19:35:03.019225 HTTP:  #046: GET /db/api-test2_2?rev=1-1bf3caa1-4b07-458a-b3e8-229c8004de35&revs=true&attachments=true
+19:35:03.156412 HTTP:  #047: GET /db/api-test2_4?rev=1-0bbc3d1e-038a-419b-87fd-f39fefc66967&revs=true&attachments=true
+19:35:03.160171 HTTP:  #048: GET /db/api-test2_5?rev=1-2aa89319-fe99-4a19-a37d-1f365cfeae5f&revs=true&attachments=true
+19:35:03.165349 HTTP:  #049: GET /db/api-test2_3?rev=1-7af35d36-e479-4e7b-a18f-2b9c90aaf071&revs=true&attachments=true
+19:35:03.341270 HTTP:  #050: GET /db/api-test1_0?rev=1-e419fc10-30cb-480e-804c-00837e94de1d&revs=true&attachments=true
+19:35:03.400957 HTTP:  #051: GET /db/api-test1_2?rev=1-a53fc496-231b-4a50-bebe-0218fa266303&revs=true&attachments=true
+19:35:03.528117 HTTP:  #052: GET /db/api-test1_3?rev=1-3fe3a461-5e1b-45d4-82a6-48e9e60b4565&revs=true&attachments=true
+19:35:03.566170 HTTP:  #053: GET /db/api-test1_5?rev=1-d15d42a6-0c9c-4e18-83c5-689a37fbec31&revs=true&attachments=true
+19:35:03.569501 HTTP:  #054: GET /db/api-test1_4?rev=1-1141cfaf-59b2-471c-906d-b1440d539bfc&revs=true&attachments=true
+19:35:03.624072 HTTP:  #055: GET /db/api-test1_1?rev=1-070afe80-2b0c-412b-9407-ab29f86492c6&revs=true&attachments=true
+19:35:03.682239 HTTP:  #056: GET /db/api-test1_9?rev=1-f349e880-38f5-41bd-8f95-a4287a0c4d01&revs=true&attachments=true
+19:35:03.685580 HTTP:  #057: GET /db/api-test1_7?rev=1-e89faa53-6a88-4a71-a72a-e20fb40a84d8&revs=true&attachments=true
+19:35:03.690141 HTTP:  #058: GET /db/api-test1_6?rev=1-b22acb9a-855f-48b2-a0fd-06d23f42e9d5&revs=true&attachments=true
+19:35:03.730492 HTTP:  #059: GET /db/api-test1_8?rev=1-9af8e941-058f-4e43-b81b-d76a632db75d&revs=true&attachments=true
+19:35:03.809093 HTTP:  #060: GET /db/api-test2_1?rev=1-b96f21b0-0261-402f-ab60-7f664c9fb064&revs=true&attachments=true
+19:35:03.816786 HTTP:  #061: GET /db/api-test2_3?rev=1-7af35d36-e479-4e7b-a18f-2b9c90aaf071&revs=true&attachments=true
+19:35:03.843398 HTTP:  #062: GET /db/api-test2_0?rev=1-82897779-842e-4b11-93dd-35bd023a7ed4&revs=true&attachments=true
+19:35:03.845291 HTTP:  #063: GET /db/api-test2_4?rev=1-0bbc3d1e-038a-419b-87fd-f39fefc66967&revs=true&attachments=true
+19:35:03.856681 HTTP:  #064: GET /db/api-test2_2?rev=1-1bf3caa1-4b07-458a-b3e8-229c8004de35&revs=true&attachments=true
+19:35:03.884295 HTTP:  #065: GET /db/api-test2_5?rev=1-2aa89319-fe99-4a19-a37d-1f365cfeae5f&revs=true&attachments=true
+19:35:04.040956 HTTP:  #066: POST /db/_bulk_docs
+19:35:04.041324 CRUD: Stored doc "api-test2_9" / "1-4a8f1901-0175-4bc5-b89f-624ac4c69127"
+19:35:04.074949 HTTP:  #067: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A20
+19:35:04.077546 HTTP:  #068: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A20
+19:35:04.086700 HTTP:  #069: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A20
+19:35:04.724492 HTTP:  #070: POST /db/_bulk_docs
+19:35:04.726068 CRUD: Stored doc "api-test3_0" / "1-6d1ed1d4-6750-4570-84cb-a7700598b485"
+19:35:04.726214 CRUD: Stored doc "api-test3_2" / "1-976733a7-8dd5-4204-b901-a29423ebed7f"
+19:35:04.726365 CRUD: Stored doc "api-test3_1" / "1-75d0fef1-82e2-4073-a4f3-46d06fcf15d0"
+19:35:04.726508 CRUD: Stored doc "api-test3_3" / "1-3d328cd0-4764-45b5-8329-7256b790cba7"
+19:35:04.726638 CRUD: Stored doc "api-test3_5" / "1-dbc363cc-c50d-436f-89ea-0e5a6a134095"
+19:35:04.726761 CRUD: Stored doc "api-test3_4" / "1-3099e8d5-1b12-410c-8fb5-d2345bf6f00a"
+19:35:04.726907 CRUD: Stored doc "api-test3_7" / "1-734c442b-1936-41f4-95a3-2e576b1eca11"
+19:35:04.727026 CRUD: Stored doc "api-test3_8" / "1-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6"
+19:35:04.727149 CRUD: Stored doc "api-test3_6" / "1-232d9430-17ca-48ab-9060-241914353447"
+19:35:04.727300 CRUD: Stored doc "api-test3_9" / "1-4c4e3eef-154b-43b9-a9ec-23be048d1b17"
+19:35:04.748320 HTTP:  #071: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A21
+19:35:04.752039 HTTP:  #072: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A21
+19:35:04.762158 HTTP:  #073: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A21
+19:35:04.872223 HTTP:  #074: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A30
+19:35:04.874261 HTTP:  #075: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A30
+19:35:04.880752 HTTP:  #076: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A30
+19:35:04.943266 HTTP:  #077: GET /db/api-test2_1?rev=1-b96f21b0-0261-402f-ab60-7f664c9fb064&revs=true&attachments=true
+19:35:04.985701 HTTP:  #078: GET /db/api-test2_3?rev=1-7af35d36-e479-4e7b-a18f-2b9c90aaf071&revs=true&attachments=true
+19:35:04.989614 HTTP:  #079: GET /db/api-test2_2?rev=1-1bf3caa1-4b07-458a-b3e8-229c8004de35&revs=true&attachments=true
+19:35:05.050684 HTTP:  #080: GET /db/api-test2_5?rev=1-2aa89319-fe99-4a19-a37d-1f365cfeae5f&revs=true&attachments=true
+19:35:05.052600 HTTP:  #081: GET /db/api-test2_4?rev=1-0bbc3d1e-038a-419b-87fd-f39fefc66967&revs=true&attachments=true
+19:35:05.100377 HTTP:  #082: GET /db/api-test2_6?rev=1-be278196-bbc3-452e-bfa0-5effce1c6b0a&revs=true&attachments=true
+19:35:05.122370 HTTP:  #083: GET /db/api-test2_7?rev=1-de33342d-1f0d-4442-bce1-4f05d19e1df1&revs=true&attachments=true
+# delete db docs
+ok 41 all docs deleted
+ok 42 all docs deleted
+ok 43 all docs deleted
+Skipping local replication on Android
+# verify local-replicated dbs changefeed
+19:35:05.173065 HTTP:  #084: GET /db/api-test2_8?rev=1-c8db4142-c661-492b-92df-0a7c03669ba6&revs=true&attachments=true
+19:35:05.192205 HTTP:  #085: GET /db/api-test2_9?rev=1-4a8f1901-0175-4bc5-b89f-624ac4c69127&revs=true&attachments=true
+19:35:05.222287 HTTP:  #086: POST /db/_revs_diff
+19:35:05.261479 HTTP:  #087: GET /db/api-test2_7?rev=1-de33342d-1f0d-4442-bce1-4f05d19e1df1&revs=true&attachments=true
+19:35:05.270281 HTTP:  #088: GET /db/api-test2_6?rev=1-be278196-bbc3-452e-bfa0-5effce1c6b0a&revs=true&attachments=true
+19:35:05.301575 HTTP:  #089: GET /db/api-test2_8?rev=1-c8db4142-c661-492b-92df-0a7c03669ba6&revs=true&attachments=true
+19:35:05.319290 HTTP:  #090: GET /db/api-test2_6?rev=1-be278196-bbc3-452e-bfa0-5effce1c6b0a&revs=true&attachments=true
+19:35:05.343895 HTTP:  #091: GET /db/api-test2_7?rev=1-de33342d-1f0d-4442-bce1-4f05d19e1df1&revs=true&attachments=true
+19:35:05.371410 HTTP:  #092: GET /db/api-test2_8?rev=1-c8db4142-c661-492b-92df-0a7c03669ba6&revs=true&attachments=true
+19:35:05.404422 HTTP:  #093: PUT /db/_local/7f00cdf39756b11f8b9bbe2cc7c3bfa4236e3f90
+19:35:05.442628 HTTP:  #094: POST /db/_revs_diff
+19:35:05.516509 HTTP:  #095: GET /db/api-test2_9?rev=1-4a8f1901-0175-4bc5-b89f-624ac4c69127&revs=true&attachments=true
+19:35:05.538852 HTTP:  #096: GET /db/api-test3_0?rev=1-6d1ed1d4-6750-4570-84cb-a7700598b485&revs=true&attachments=true
+19:35:05.552114 HTTP:  #097: GET /db/api-test3_2?rev=1-976733a7-8dd5-4204-b901-a29423ebed7f&revs=true&attachments=true
+19:35:05.571221 HTTP:  #098: GET /db/api-test3_1?rev=1-75d0fef1-82e2-4073-a4f3-46d06fcf15d0&revs=true&attachments=true
+19:35:05.595969 HTTP:  #099: GET /db/api-test3_3?rev=1-3d328cd0-4764-45b5-8329-7256b790cba7&revs=true&attachments=true
+19:35:05.615910 HTTP:  #100: GET /db/api-test3_5?rev=1-dbc363cc-c50d-436f-89ea-0e5a6a134095&revs=true&attachments=true
+19:35:05.634961 HTTP:  #101: GET /db/api-test3_4?rev=1-3099e8d5-1b12-410c-8fb5-d2345bf6f00a&revs=true&attachments=true
+19:35:05.660031 HTTP:  #102: GET /db/api-test3_7?rev=1-734c442b-1936-41f4-95a3-2e576b1eca11&revs=true&attachments=true
+19:35:05.687088 HTTP:  #103: GET /db/api-test3_8?rev=1-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6&revs=true&attachments=true
+19:35:05.697357 HTTP:  #104: GET /db/api-test3_6?rev=1-232d9430-17ca-48ab-9060-241914353447&revs=true&attachments=true
+19:35:05.743270 HTTP:  #105: GET /db/api-test3_9?rev=1-4c4e3eef-154b-43b9-a9ec-23be048d1b17&revs=true&attachments=true
+19:35:05.781131 HTTP:  #106: GET /db/api-test2_9?rev=1-4a8f1901-0175-4bc5-b89f-624ac4c69127&revs=true&attachments=true
+19:35:05.832096 HTTP:  #107: GET /db/api-test3_0?rev=1-6d1ed1d4-6750-4570-84cb-a7700598b485&revs=true&attachments=true
+19:35:05.837768 HTTP:  #108: GET /db/api-test3_2?rev=1-976733a7-8dd5-4204-b901-a29423ebed7f&revs=true&attachments=true
+19:35:05.896137 HTTP:  #109: GET /db/api-test3_3?rev=1-3d328cd0-4764-45b5-8329-7256b790cba7&revs=true&attachments=true
+19:35:05.896918 HTTP:  #110: GET /db/api-test3_1?rev=1-75d0fef1-82e2-4073-a4f3-46d06fcf15d0&revs=true&attachments=true
+19:35:05.921342 HTTP:  #111: GET /db/api-test3_5?rev=1-dbc363cc-c50d-436f-89ea-0e5a6a134095&revs=true&attachments=true
+19:35:05.942880 HTTP:  #112: GET /db/api-test3_4?rev=1-3099e8d5-1b12-410c-8fb5-d2345bf6f00a&revs=true&attachments=true
+19:35:05.952373 HTTP:  #113: GET /db/api-test3_7?rev=1-734c442b-1936-41f4-95a3-2e576b1eca11&revs=true&attachments=true
+19:35:05.975684 HTTP:  #114: GET /db/api-test3_8?rev=1-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6&revs=true&attachments=true
+19:35:06.002806 HTTP:  #115: GET /db/api-test3_6?rev=1-232d9430-17ca-48ab-9060-241914353447&revs=true&attachments=true
+19:35:06.024894 HTTP:  #116: GET /db/api-test3_9?rev=1-4c4e3eef-154b-43b9-a9ec-23be048d1b17&revs=true&attachments=true
+19:35:06.029140 HTTP:  #117: POST /db/_revs_diff
+19:35:06.107743 HTTP:  #118: GET /db/api-test3_0?rev=1-6d1ed1d4-6750-4570-84cb-a7700598b485&revs=true&attachments=true
+19:35:06.167285 HTTP:  #119: GET /db/api-test3_1?rev=1-75d0fef1-82e2-4073-a4f3-46d06fcf15d0&revs=true&attachments=true
+19:35:06.179456 HTTP:  #120: GET /db/api-test3_2?rev=1-976733a7-8dd5-4204-b901-a29423ebed7f&revs=true&attachments=true
+19:35:06.241260 HTTP:  #121: GET /db/api-test3_5?rev=1-dbc363cc-c50d-436f-89ea-0e5a6a134095&revs=true&attachments=true
+19:35:06.243379 HTTP:  #122: GET /db/api-test3_4?rev=1-3099e8d5-1b12-410c-8fb5-d2345bf6f00a&revs=true&attachments=true
+19:35:06.246223 HTTP:  #123: GET /db/api-test3_3?rev=1-3d328cd0-4764-45b5-8329-7256b790cba7&revs=true&attachments=true
+19:35:06.301883 HTTP:  #124: GET /db/api-test3_7?rev=1-734c442b-1936-41f4-95a3-2e576b1eca11&revs=true&attachments=true
+19:35:06.319169 HTTP:  #125: GET /db/api-test3_8?rev=1-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6&revs=true&attachments=true
+19:35:06.321707 HTTP:  #126: GET /db/api-test3_9?rev=1-4c4e3eef-154b-43b9-a9ec-23be048d1b17&revs=true&attachments=true
+19:35:06.331488 HTTP:  #127: GET /db/api-test3_6?rev=1-232d9430-17ca-48ab-9060-241914353447&revs=true&attachments=true
+19:35:06.422095 HTTP:  #128: POST /db/_bulk_docs
+19:35:06.422936 CRUD: Stored doc "api-test1_1" / "2-12752510-3db3-4949-8c1a-d0b490ca6a3c"
+19:35:06.423264 CRUD: Stored doc "api-test1_0" / "2-1ff0b94b-96f4-4703-aaef-71771d54635d"
+19:35:06.423548 CRUD: Stored doc "api-test1_3" / "2-b2515e29-e475-4c66-bfad-86f50755d9e2"
+19:35:06.423797 CRUD: Stored doc "api-test1_2" / "2-5cf45081-1d28-47ec-9ebf-333401a6b81c"
+19:35:06.424039 CRUD: Stored doc "api-test1_6" / "2-1bff044e-d10a-4e25-8402-0098f34b3f42"
+19:35:06.424299 CRUD: Stored doc "api-test1_4" / "2-928fe4ef-1391-4c62-afd7-13ddc29f52bc"
+19:35:06.424540 CRUD: Stored doc "api-test1_7" / "2-f471ae58-81dc-45f4-be90-f66f0e61954b"
+19:35:06.424789 CRUD: Stored doc "api-test1_9" / "2-e2d5b798-1425-41f9-aa63-33c9612861b8"
+19:35:06.425028 CRUD: Stored doc "api-test1_8" / "2-e18e195d-5533-4873-9c4b-31492cbc2e05"
+19:35:06.425285 CRUD: Stored doc "api-test1_5" / "2-11da2588-52c4-46f9-ab43-93e98c73e37a"
+19:35:06.454642 HTTP:  #129: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A31
+19:35:06.458080 HTTP:  #130: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A31
+19:35:06.462347 HTTP:  #131: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A31
+19:35:06.541551 HTTP:  #132: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A40
+19:35:06.543523 HTTP:  #133: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A40
+19:35:06.561435 HTTP:  #134: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A40
+19:35:06.674822 HTTP:  #135: POST /db/_bulk_docs
+19:35:06.675546 CRUD: Stored doc "api-test2_0" / "2-c2cf09e8-635c-47be-bbb7-93cea6c38d92"
+19:35:06.675863 CRUD: Stored doc "api-test2_1" / "2-ff708726-09e3-4abe-a99c-9d9a21f05399"
+19:35:06.676122 CRUD: Stored doc "api-test2_4" / "2-fcd97120-3e5a-4dbb-851f-d88dc91faf68"
+19:35:06.676394 CRUD: Stored doc "api-test2_2" / "2-d01ccd56-169f-4d82-8809-b741ecc9d67d"
+19:35:06.676638 CRUD: Stored doc "api-test2_3" / "2-fc4bf3c5-a43d-4e33-9daf-2fb9ae707db0"
+19:35:06.676898 CRUD: Stored doc "api-test2_5" / "2-4a453d52-d03d-4190-bba1-61a6d0e4d8c6"
+19:35:06.677140 CRUD: Stored doc "api-test2_6" / "2-514dc613-389d-48e1-8192-56f72ecf0a84"
+19:35:06.677401 CRUD: Stored doc "api-test2_8" / "2-27d4dd1d-7cd3-438c-9843-e719db3afb46"
+19:35:06.677647 CRUD: Stored doc "api-test2_7" / "2-7619d13b-0fd0-4e3c-af05-bc8e11976ffe"
+19:35:06.677911 CRUD: Stored doc "api-test2_9" / "2-a73516ee-3e79-4acd-9745-0c3c487be544"
+19:35:06.705815 HTTP:  #136: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A41
+19:35:06.712375 HTTP:  #137: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A41
+19:35:06.715725 HTTP:  #138: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A41
+19:35:06.777746 HTTP:  #139: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A50
+19:35:06.783886 HTTP:  #140: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A50
+19:35:06.792740 HTTP:  #141: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A50
+19:35:06.978903 HTTP:  #142: PUT /db/_local/ded5fcaf5a3b77006f243437ca0399cc847baeca
+19:35:07.077603 HTTP:  #143: POST /db/_bulk_docs
+19:35:07.078373 CRUD: Stored doc "api-test3_1" / "2-e62d29a9-8ef8-49c5-9604-24cd0682731e"
+19:35:07.078680 CRUD: Stored doc "api-test3_0" / "2-a9a96779-9430-4f00-a6bc-db5b55ff923c"
+19:35:07.078943 CRUD: Stored doc "api-test3_4" / "2-416c12c7-a793-4790-aebe-888f51814ff1"
+19:35:07.079215 CRUD: Stored doc "api-test3_3" / "2-fdd82bb7-1117-4ed0-9291-00ec038f16f4"
+19:35:07.079482 CRUD: Stored doc "api-test3_2" / "2-8cbf9449-4587-45e5-9033-88850cf8a13f"
+19:35:07.079757 CRUD: Stored doc "api-test3_5" / "2-7e4359b8-7ed3-4d3f-a908-2e43257f70cc"
+19:35:07.080039 CRUD: Stored doc "api-test3_6" / "2-cf828cdf-f7d3-4acf-830c-3e8156d2ed49"
+19:35:07.080313 CRUD: Stored doc "api-test3_8" / "2-22572bba-8b9d-453c-b3af-4ab67453da15"
+19:35:07.080586 CRUD: Stored doc "api-test3_7" / "2-d3e83e9d-7083-4e24-9464-81e54aba4b87"
+19:35:07.080845 CRUD: Stored doc "api-test3_9" / "2-90085aa4-c4da-4569-91a0-5a80ffb94a7a"
+19:35:07.118760 HTTP:  #144: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A51
+19:35:07.124977 HTTP:  #145: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A51
+19:35:07.125937 HTTP:  #146: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A51
+19:35:07.205878 HTTP:  #147: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A60
+19:35:07.232897 HTTP:  #148: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A60
+19:35:07.261619 HTTP:  #149: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&since=*%3A60
+api-test4 has 0 docs expecting 0
+api-test6 has 0 docs expecting 0
+api-test5 has 0 docs expecting 0
+# verify local-replicated num-docs 0
+ok 44 verified api-test4 numdocs 0 == 0
+ok 45 verified api-test6 numdocs 0 == 0
+ok 46 verified api-test5 numdocs 0 == 0
+Skipping local replication on Android
+# verify sg-replicated dbs loaded
+Skipping local replication on Android
+# verify sg-replicated num-docs
+# load databases
+ok 47 docid
+ok 48 docid
+ok 49 docid
+ok 50 docid
+ok 51 docid
+ok 52 docid
+ok 53 docid
+ok 54 docid
+ok 55 docid
+ok 56 docid
+ok 57 docid
+ok 58 docid
+ok 59 docid
+ok 60 docid
+ok 61 docid
+ok 62 docid
+ok 63 docid
+ok 64 docid
+ok 65 docid
+ok 66 docid
+ok 67 docid
+ok 68 docid
+ok 69 docid
+ok 70 docid
+ok 71 docid
+ok 72 docid
+ok 73 docid
+ok 74 docid
+ok 75 docid
+ok 76 docid
+Skipping local replication on Android
+# verify local-replicated num-docs numDocs-2
+19:35:10.571626 HTTP:  #150: GET /db/api-test1_1?rev=2-12752510-3db3-4949-8c1a-d0b490ca6a3c&revs=true&attachments=true&atts_since=%5B%221-070afe80-2b0c-412b-9407-ab29f86492c6%22%5D
+19:35:10.662555 HTTP:  #151: GET /db/api-test1_0?rev=2-1ff0b94b-96f4-4703-aaef-71771d54635d&revs=true&attachments=true&atts_since=%5B%221-e419fc10-30cb-480e-804c-00837e94de1d%22%5D
+19:35:10.837624 HTTP:  #152: GET /db/api-test1_3?rev=2-b2515e29-e475-4c66-bfad-86f50755d9e2&revs=true&attachments=true&atts_since=%5B%221-3fe3a461-5e1b-45d4-82a6-48e9e60b4565%22%5D
+19:35:10.919416 HTTP:  #153: GET /db/api-test1_2?rev=2-5cf45081-1d28-47ec-9ebf-333401a6b81c&revs=true&attachments=true&atts_since=%5B%221-a53fc496-231b-4a50-bebe-0218fa266303%22%5D
+19:35:10.974864 HTTP:  #154: GET /db/api-test1_6?rev=2-1bff044e-d10a-4e25-8402-0098f34b3f42&revs=true&attachments=true&atts_since=%5B%221-b22acb9a-855f-48b2-a0fd-06d23f42e9d5%22%5D
+19:35:11.062007 HTTP:  #155: GET /db/api-test1_4?rev=2-928fe4ef-1391-4c62-afd7-13ddc29f52bc&revs=true&attachments=true&atts_since=%5B%221-1141cfaf-59b2-471c-906d-b1440d539bfc%22%5D
+19:35:11.193929 HTTP:  #156: GET /db/api-test1_9?rev=2-e2d5b798-1425-41f9-aa63-33c9612861b8&revs=true&attachments=true&atts_since=%5B%221-f349e880-38f5-41bd-8f95-a4287a0c4d01%22%5D
+19:35:11.254677 HTTP:  #157: GET /db/api-test1_7?rev=2-f471ae58-81dc-45f4-be90-f66f0e61954b&revs=true&attachments=true&atts_since=%5B%221-e89faa53-6a88-4a71-a72a-e20fb40a84d8%22%5D
+19:35:11.291237 HTTP:  #158: GET /db/api-test1_8?rev=2-e18e195d-5533-4873-9c4b-31492cbc2e05&revs=true&attachments=true&atts_since=%5B%221-9af8e941-058f-4e43-b81b-d76a632db75d%22%5D
+19:35:11.309060 HTTP:  #159: GET /db/api-test1_5?rev=2-11da2588-52c4-46f9-ab43-93e98c73e37a&revs=true&attachments=true&atts_since=%5B%221-d15d42a6-0c9c-4e18-83c5-689a37fbec31%22%5D
+19:35:11.494179 HTTP:  #160: GET /db/api-test2_4?rev=2-fcd97120-3e5a-4dbb-851f-d88dc91faf68&revs=true&attachments=true&atts_since=%5B%221-0bbc3d1e-038a-419b-87fd-f39fefc66967%22%5D
+19:35:11.504755 HTTP:  #161: GET /db/api-test2_0?rev=2-c2cf09e8-635c-47be-bbb7-93cea6c38d92&revs=true&attachments=true&atts_since=%5B%221-82897779-842e-4b11-93dd-35bd023a7ed4%22%5D
+19:35:11.549351 HTTP:  #162: GET /db/api-test2_1?rev=2-ff708726-09e3-4abe-a99c-9d9a21f05399&revs=true&attachments=true&atts_since=%5B%221-b96f21b0-0261-402f-ab60-7f664c9fb064%22%5D
+19:35:11.603002 HTTP:  #163: GET /db/api-test2_2?rev=2-d01ccd56-169f-4d82-8809-b741ecc9d67d&revs=true&attachments=true&atts_since=%5B%221-1bf3caa1-4b07-458a-b3e8-229c8004de35%22%5D
+19:35:11.653997 HTTP:  #164: GET /db/api-test2_3?rev=2-fc4bf3c5-a43d-4e33-9daf-2fb9ae707db0&revs=true&attachments=true&atts_since=%5B%221-7af35d36-e479-4e7b-a18f-2b9c90aaf071%22%5D
+19:35:11.682661 HTTP:  #165: GET /db/api-test2_5?rev=2-4a453d52-d03d-4190-bba1-61a6d0e4d8c6&revs=true&attachments=true&atts_since=%5B%221-2aa89319-fe99-4a19-a37d-1f365cfeae5f%22%5D
+19:35:11.959591 HTTP:  #166: GET /db/api-test1_1?rev=2-12752510-3db3-4949-8c1a-d0b490ca6a3c&revs=true&attachments=true&atts_since=%5B%221-070afe80-2b0c-412b-9407-ab29f86492c6%22%5D
+19:35:12.037364 HTTP:  #167: GET /db/api-test1_3?rev=2-b2515e29-e475-4c66-bfad-86f50755d9e2&revs=true&attachments=true&atts_since=%5B%221-3fe3a461-5e1b-45d4-82a6-48e9e60b4565%22%5D
+19:35:12.038278 HTTP:  #168: GET /db/api-test1_0?rev=2-1ff0b94b-96f4-4703-aaef-71771d54635d&revs=true&attachments=true&atts_since=%5B%221-e419fc10-30cb-480e-804c-00837e94de1d%22%5D
+19:35:12.053787 HTTP:  #169: GET /db/api-test1_2?rev=2-5cf45081-1d28-47ec-9ebf-333401a6b81c&revs=true&attachments=true&atts_since=%5B%221-a53fc496-231b-4a50-bebe-0218fa266303%22%5D
+19:35:12.112674 HTTP:  #170: GET /db/api-test1_4?rev=2-928fe4ef-1391-4c62-afd7-13ddc29f52bc&revs=true&attachments=true&atts_since=%5B%221-1141cfaf-59b2-471c-906d-b1440d539bfc%22%5D
+19:35:12.143690 HTTP:  #171: GET /db/api-test1_6?rev=2-1bff044e-d10a-4e25-8402-0098f34b3f42&revs=true&attachments=true&atts_since=%5B%221-b22acb9a-855f-48b2-a0fd-06d23f42e9d5%22%5D
+19:35:12.257302 HTTP:  #172: GET /db/api-test1_9?rev=2-e2d5b798-1425-41f9-aa63-33c9612861b8&revs=true&attachments=true&atts_since=%5B%221-f349e880-38f5-41bd-8f95-a4287a0c4d01%22%5D
+19:35:12.283499 HTTP:  #173: GET /db/api-test1_7?rev=2-f471ae58-81dc-45f4-be90-f66f0e61954b&revs=true&attachments=true&atts_since=%5B%221-e89faa53-6a88-4a71-a72a-e20fb40a84d8%22%5D
+19:35:12.314717 HTTP:  #174: GET /db/api-test1_8?rev=2-e18e195d-5533-4873-9c4b-31492cbc2e05&revs=true&attachments=true&atts_since=%5B%221-9af8e941-058f-4e43-b81b-d76a632db75d%22%5D
+19:35:12.388926 HTTP:  #175: GET /db/api-test1_5?rev=2-11da2588-52c4-46f9-ab43-93e98c73e37a&revs=true&attachments=true&atts_since=%5B%221-d15d42a6-0c9c-4e18-83c5-689a37fbec31%22%5D
+19:35:12.394023 HTTP:  #176: GET /db/api-test2_0?rev=2-c2cf09e8-635c-47be-bbb7-93cea6c38d92&revs=true&attachments=true&atts_since=%5B%221-82897779-842e-4b11-93dd-35bd023a7ed4%22%5D
+19:35:12.504633 HTTP:  #177: GET /db/api-test2_1?rev=2-ff708726-09e3-4abe-a99c-9d9a21f05399&revs=true&attachments=true&atts_since=%5B%221-b96f21b0-0261-402f-ab60-7f664c9fb064%22%5D
+19:35:12.523090 HTTP:  #178: GET /db/api-test2_4?rev=2-fcd97120-3e5a-4dbb-851f-d88dc91faf68&revs=true&attachments=true&atts_since=%5B%221-0bbc3d1e-038a-419b-87fd-f39fefc66967%22%5D
+19:35:12.559903 HTTP:  #179: GET /db/api-test2_2?rev=2-d01ccd56-169f-4d82-8809-b741ecc9d67d&revs=true&attachments=true&atts_since=%5B%221-1bf3caa1-4b07-458a-b3e8-229c8004de35%22%5D
+19:35:12.632400 HTTP:  #180: GET /db/api-test2_3?rev=2-fc4bf3c5-a43d-4e33-9daf-2fb9ae707db0&revs=true&attachments=true&atts_since=%5B%221-7af35d36-e479-4e7b-a18f-2b9c90aaf071%22%5D
+19:35:12.686489 HTTP:  #181: GET /db/api-test2_5?rev=2-4a453d52-d03d-4190-bba1-61a6d0e4d8c6&revs=true&attachments=true&atts_since=%5B%221-2aa89319-fe99-4a19-a37d-1f365cfeae5f%22%5D
+19:35:12.906739 HTTP:  #182: GET /db/api-test1_0?rev=2-1ff0b94b-96f4-4703-aaef-71771d54635d&revs=true&attachments=true&atts_since=%5B%221-e419fc10-30cb-480e-804c-00837e94de1d%22%5D
+19:35:12.907889 HTTP:  #183: GET /db/api-test1_1?rev=2-12752510-3db3-4949-8c1a-d0b490ca6a3c&revs=true&attachments=true&atts_since=%5B%221-070afe80-2b0c-412b-9407-ab29f86492c6%22%5D
+19:35:12.976149 HTTP:  #184: GET /db/api-test1_2?rev=2-5cf45081-1d28-47ec-9ebf-333401a6b81c&revs=true&attachments=true&atts_since=%5B%221-a53fc496-231b-4a50-bebe-0218fa266303%22%5D
+19:35:12.979871 HTTP:  #185: GET /db/api-test1_3?rev=2-b2515e29-e475-4c66-bfad-86f50755d9e2&revs=true&attachments=true&atts_since=%5B%221-3fe3a461-5e1b-45d4-82a6-48e9e60b4565%22%5D
+19:35:13.071968 HTTP:  #186: GET /db/api-test1_6?rev=2-1bff044e-d10a-4e25-8402-0098f34b3f42&revs=true&attachments=true&atts_since=%5B%221-b22acb9a-855f-48b2-a0fd-06d23f42e9d5%22%5D
+19:35:13.106541 HTTP:  #187: GET /db/api-test1_7?rev=2-f471ae58-81dc-45f4-be90-f66f0e61954b&revs=true&attachments=true&atts_since=%5B%221-e89faa53-6a88-4a71-a72a-e20fb40a84d8%22%5D
+19:35:13.110728 HTTP:  #188: GET /db/api-test1_4?rev=2-928fe4ef-1391-4c62-afd7-13ddc29f52bc&revs=true&attachments=true&atts_since=%5B%221-1141cfaf-59b2-471c-906d-b1440d539bfc%22%5D
+19:35:13.138890 HTTP:  #189: GET /db/api-test1_9?rev=2-e2d5b798-1425-41f9-aa63-33c9612861b8&revs=true&attachments=true&atts_since=%5B%221-f349e880-38f5-41bd-8f95-a4287a0c4d01%22%5D
+19:35:13.194478 HTTP:  #190: GET /db/api-test1_8?rev=2-e18e195d-5533-4873-9c4b-31492cbc2e05&revs=true&attachments=true&atts_since=%5B%221-9af8e941-058f-4e43-b81b-d76a632db75d%22%5D
+19:35:13.322341 HTTP:  #191: GET /db/api-test1_5?rev=2-11da2588-52c4-46f9-ab43-93e98c73e37a&revs=true&attachments=true&atts_since=%5B%221-d15d42a6-0c9c-4e18-83c5-689a37fbec31%22%5D
+19:35:13.325292 HTTP:  #192: GET /db/api-test2_0?rev=2-c2cf09e8-635c-47be-bbb7-93cea6c38d92&revs=true&attachments=true&atts_since=%5B%221-82897779-842e-4b11-93dd-35bd023a7ed4%22%5D
+19:35:13.336746 HTTP:  #193: GET /db/api-test2_1?rev=2-ff708726-09e3-4abe-a99c-9d9a21f05399&revs=true&attachments=true&atts_since=%5B%221-b96f21b0-0261-402f-ab60-7f664c9fb064%22%5D
+19:35:13.379988 HTTP:  #194: GET /db/api-test2_4?rev=2-fcd97120-3e5a-4dbb-851f-d88dc91faf68&revs=true&attachments=true&atts_since=%5B%221-0bbc3d1e-038a-419b-87fd-f39fefc66967%22%5D
+19:35:13.420145 HTTP:  #195: GET /db/api-test2_2?rev=2-d01ccd56-169f-4d82-8809-b741ecc9d67d&revs=true&attachments=true&atts_since=%5B%221-1bf3caa1-4b07-458a-b3e8-229c8004de35%22%5D
+19:35:13.509229 HTTP:  #196: GET /db/api-test2_3?rev=2-fc4bf3c5-a43d-4e33-9daf-2fb9ae707db0&revs=true&attachments=true&atts_since=%5B%221-7af35d36-e479-4e7b-a18f-2b9c90aaf071%22%5D
+19:35:13.571465 HTTP:  #197: GET /db/api-test2_5?rev=2-4a453d52-d03d-4190-bba1-61a6d0e4d8c6&revs=true&attachments=true&atts_since=%5B%221-2aa89319-fe99-4a19-a37d-1f365cfeae5f%22%5D
+19:35:13.652698 HTTP:  #198: PUT /db/_local/5abf696b38698d1f334b5e680ebdc3c72e1f4cd7
+19:35:14.117158 HTTP:  #199: POST /db/_revs_diff
+19:35:14.182011 HTTP:  #200: POST /db/_revs_diff
+19:35:14.209289 HTTP:  #201: PUT /db/_local/99f4d5e1d450289d5ffce2d5de364ba64c5a6a1e
+19:35:14.220230 HTTP:  #202: POST /db/_revs_diff
+19:35:14.237621 HTTP:  #203: PUT /db/_local/49a8b8a9c6ea012c614223da41a5d55e345b4f7d
+# purge dbs
+19:35:14.287593 HTTP:  #204: GET /db/api-test2_6?rev=2-514dc613-389d-48e1-8192-56f72ecf0a84&revs=true&attachments=true&atts_since=%5B%221-be278196-bbc3-452e-bfa0-5effce1c6b0a%22%5D
+19:35:14.313317 HTTP:  #205: GET /db/api-test2_8?rev=2-27d4dd1d-7cd3-438c-9843-e719db3afb46&revs=true&attachments=true&atts_since=%5B%221-c8db4142-c661-492b-92df-0a7c03669ba6%22%5D
+19:35:14.360176 HTTP:  #206: GET /db/api-test2_7?rev=2-7619d13b-0fd0-4e3c-af05-bc8e11976ffe&revs=true&attachments=true&atts_since=%5B%221-de33342d-1f0d-4442-bce1-4f05d19e1df1%22%5D
+19:35:14.414507 HTTP:  #207: GET /db/api-test2_9?rev=2-a73516ee-3e79-4acd-9745-0c3c487be544&revs=true&attachments=true&atts_since=%5B%221-4a8f1901-0175-4bc5-b89f-624ac4c69127%22%5D
+19:35:14.459070 HTTP:  #208: GET /db/api-test3_1?rev=2-e62d29a9-8ef8-49c5-9604-24cd0682731e&revs=true&attachments=true&atts_since=%5B%221-75d0fef1-82e2-4073-a4f3-46d06fcf15d0%22%5D
+19:35:14.473170 HTTP:  #209: GET /db/api-test3_0?rev=2-a9a96779-9430-4f00-a6bc-db5b55ff923c&revs=true&attachments=true&atts_since=%5B%221-6d1ed1d4-6750-4570-84cb-a7700598b485%22%5D
+19:35:14.493978 HTTP:  #210: GET /db/api-test3_4?rev=2-416c12c7-a793-4790-aebe-888f51814ff1&revs=true&attachments=true&atts_since=%5B%221-3099e8d5-1b12-410c-8fb5-d2345bf6f00a%22%5D
+19:35:14.525309 HTTP:  #211: GET /db/api-test3_3?rev=2-fdd82bb7-1117-4ed0-9291-00ec038f16f4&revs=true&attachments=true&atts_since=%5B%221-3d328cd0-4764-45b5-8329-7256b790cba7%22%5D
+19:35:14.550911 HTTP:  #212: GET /db/api-test3_2?rev=2-8cbf9449-4587-45e5-9033-88850cf8a13f&revs=true&attachments=true&atts_since=%5B%221-976733a7-8dd5-4204-b901-a29423ebed7f%22%5D
+19:35:14.576039 HTTP:  #213: GET /db/api-test3_5?rev=2-7e4359b8-7ed3-4d3f-a908-2e43257f70cc&revs=true&attachments=true&atts_since=%5B%221-dbc363cc-c50d-436f-89ea-0e5a6a134095%22%5D
+19:35:14.607446 HTTP:  #214: GET /db/api-test3_6?rev=2-cf828cdf-f7d3-4acf-830c-3e8156d2ed49&revs=true&attachments=true&atts_since=%5B%221-232d9430-17ca-48ab-9060-241914353447%22%5D
+19:35:14.631894 HTTP:  #215: GET /db/api-test3_8?rev=2-22572bba-8b9d-453c-b3af-4ab67453da15&revs=true&attachments=true&atts_since=%5B%221-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6%22%5D
+19:35:14.658372 HTTP:  #216: GET /db/api-test3_7?rev=2-d3e83e9d-7083-4e24-9464-81e54aba4b87&revs=true&attachments=true&atts_since=%5B%221-734c442b-1936-41f4-95a3-2e576b1eca11%22%5D
+19:35:14.682969 HTTP:  #217: GET /db/api-test3_9?rev=2-90085aa4-c4da-4569-91a0-5a80ffb94a7a&revs=true&attachments=true&atts_since=%5B%221-4c4e3eef-154b-43b9-a9ec-23be048d1b17%22%5D
+19:35:14.722065 HTTP:  #218: PUT /db/_local/e62c0b7366ff1c04dcf199194709eaf22fe04434
+19:35:14.775231 HTTP:  #219: PUT /db/_local/7f00cdf39756b11f8b9bbe2cc7c3bfa4236e3f90
+19:35:14.820523 HTTP:  #220: PUT /db/_local/ded5fcaf5a3b77006f243437ca0399cc847baeca
+19:35:14.862640 HTTP:  #221: GET /db/api-test2_6?rev=2-514dc613-389d-48e1-8192-56f72ecf0a84&revs=true&attachments=true&atts_since=%5B%221-be278196-bbc3-452e-bfa0-5effce1c6b0a%22%5D
+19:35:14.889822 HTTP:  #222: GET /db/api-test2_8?rev=2-27d4dd1d-7cd3-438c-9843-e719db3afb46&revs=true&attachments=true&atts_since=%5B%221-c8db4142-c661-492b-92df-0a7c03669ba6%22%5D
+19:35:14.919602 HTTP:  #223: GET /db/api-test2_7?rev=2-7619d13b-0fd0-4e3c-af05-bc8e11976ffe&revs=true&attachments=true&atts_since=%5B%221-de33342d-1f0d-4442-bce1-4f05d19e1df1%22%5D
+19:35:14.939917 HTTP:  #224: GET /db/api-test2_9?rev=2-a73516ee-3e79-4acd-9745-0c3c487be544&revs=true&attachments=true&atts_since=%5B%221-4a8f1901-0175-4bc5-b89f-624ac4c69127%22%5D
+19:35:14.967674 HTTP:  #225: GET /db/api-test3_1?rev=2-e62d29a9-8ef8-49c5-9604-24cd0682731e&revs=true&attachments=true&atts_since=%5B%221-75d0fef1-82e2-4073-a4f3-46d06fcf15d0%22%5D
+19:35:14.988311 HTTP:  #226: GET /db/api-test3_0?rev=2-a9a96779-9430-4f00-a6bc-db5b55ff923c&revs=true&attachments=true&atts_since=%5B%221-6d1ed1d4-6750-4570-84cb-a7700598b485%22%5D
+19:35:15.014378 HTTP:  #227: GET /db/api-test3_4?rev=2-416c12c7-a793-4790-aebe-888f51814ff1&revs=true&attachments=true&atts_since=%5B%221-3099e8d5-1b12-410c-8fb5-d2345bf6f00a%22%5D
+19:35:15.042364 HTTP:  #228: GET /db/api-test3_3?rev=2-fdd82bb7-1117-4ed0-9291-00ec038f16f4&revs=true&attachments=true&atts_since=%5B%221-3d328cd0-4764-45b5-8329-7256b790cba7%22%5D
+19:35:15.069015 HTTP:  #229: GET /db/api-test3_2?rev=2-8cbf9449-4587-45e5-9033-88850cf8a13f&revs=true&attachments=true&atts_since=%5B%221-976733a7-8dd5-4204-b901-a29423ebed7f%22%5D
+19:35:15.092399 HTTP:  #230: GET /db/api-test3_5?rev=2-7e4359b8-7ed3-4d3f-a908-2e43257f70cc&revs=true&attachments=true&atts_since=%5B%221-dbc363cc-c50d-436f-89ea-0e5a6a134095%22%5D
+19:35:15.123059 HTTP:  #231: GET /db/api-test3_6?rev=2-cf828cdf-f7d3-4acf-830c-3e8156d2ed49&revs=true&attachments=true&atts_since=%5B%221-232d9430-17ca-48ab-9060-241914353447%22%5D
+19:35:15.158825 HTTP:  #232: GET /db/api-test3_8?rev=2-22572bba-8b9d-453c-b3af-4ab67453da15&revs=true&attachments=true&atts_since=%5B%221-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6%22%5D
+19:35:15.216900 HTTP:  #233: GET /db/api-test3_7?rev=2-d3e83e9d-7083-4e24-9464-81e54aba4b87&revs=true&attachments=true&atts_since=%5B%221-734c442b-1936-41f4-95a3-2e576b1eca11%22%5D
+19:35:15.232769 HTTP:  #234: GET /db/api-test3_9?rev=2-90085aa4-c4da-4569-91a0-5a80ffb94a7a&revs=true&attachments=true&atts_since=%5B%221-4c4e3eef-154b-43b9-a9ec-23be048d1b17%22%5D
+19:35:15.277401 HTTP:  #235: GET /db/api-test2_6?rev=2-514dc613-389d-48e1-8192-56f72ecf0a84&revs=true&attachments=true&atts_since=%5B%221-be278196-bbc3-452e-bfa0-5effce1c6b0a%22%5D
+19:35:15.313179 HTTP:  #236: GET /db/api-test2_8?rev=2-27d4dd1d-7cd3-438c-9843-e719db3afb46&revs=true&attachments=true&atts_since=%5B%221-c8db4142-c661-492b-92df-0a7c03669ba6%22%5D
+19:35:15.340740 HTTP:  #237: GET /db/api-test2_7?rev=2-7619d13b-0fd0-4e3c-af05-bc8e11976ffe&revs=true&attachments=true&atts_since=%5B%221-de33342d-1f0d-4442-bce1-4f05d19e1df1%22%5D
+19:35:15.372596 HTTP:  #238: GET /db/api-test2_9?rev=2-a73516ee-3e79-4acd-9745-0c3c487be544&revs=true&attachments=true&atts_since=%5B%221-4a8f1901-0175-4bc5-b89f-624ac4c69127%22%5D
+19:35:15.392179 HTTP:  #239: GET /db/api-test3_1?rev=2-e62d29a9-8ef8-49c5-9604-24cd0682731e&revs=true&attachments=true&atts_since=%5B%221-75d0fef1-82e2-4073-a4f3-46d06fcf15d0%22%5D
+19:35:15.421814 HTTP:  #240: GET /db/api-test3_0?rev=2-a9a96779-9430-4f00-a6bc-db5b55ff923c&revs=true&attachments=true&atts_since=%5B%221-6d1ed1d4-6750-4570-84cb-a7700598b485%22%5D
+19:35:15.451256 HTTP:  #241: GET /db/api-test3_4?rev=2-416c12c7-a793-4790-aebe-888f51814ff1&revs=true&attachments=true&atts_since=%5B%221-3099e8d5-1b12-410c-8fb5-d2345bf6f00a%22%5D
+19:35:15.473738 HTTP:  #242: GET /db/api-test3_3?rev=2-fdd82bb7-1117-4ed0-9291-00ec038f16f4&revs=true&attachments=true&atts_since=%5B%221-3d328cd0-4764-45b5-8329-7256b790cba7%22%5D
+19:35:15.501992 HTTP:  #243: GET /db/api-test3_2?rev=2-8cbf9449-4587-45e5-9033-88850cf8a13f&revs=true&attachments=true&atts_since=%5B%221-976733a7-8dd5-4204-b901-a29423ebed7f%22%5D
+19:35:15.526943 HTTP:  #244: GET /db/api-test3_5?rev=2-7e4359b8-7ed3-4d3f-a908-2e43257f70cc&revs=true&attachments=true&atts_since=%5B%221-dbc363cc-c50d-436f-89ea-0e5a6a134095%22%5D
+19:35:15.573478 HTTP:  #245: GET /db/api-test3_6?rev=2-cf828cdf-f7d3-4acf-830c-3e8156d2ed49&revs=true&attachments=true&atts_since=%5B%221-232d9430-17ca-48ab-9060-241914353447%22%5D
+19:35:15.595198 HTTP:  #246: GET /db/api-test3_8?rev=2-22572bba-8b9d-453c-b3af-4ab67453da15&revs=true&attachments=true&atts_since=%5B%221-3b86cb32-fe4f-48d6-a3ce-5daf8153dbc6%22%5D
+19:35:15.670534 HTTP:  #247: GET /db/api-test3_7?rev=2-d3e83e9d-7083-4e24-9464-81e54aba4b87&revs=true&attachments=true&atts_since=%5B%221-734c442b-1936-41f4-95a3-2e576b1eca11%22%5D
+19:35:15.687606 HTTP:  #248: GET /db/api-test3_9?rev=2-90085aa4-c4da-4569-91a0-5a80ffb94a7a&revs=true&attachments=true&atts_since=%5B%221-4c4e3eef-154b-43b9-a9ec-23be048d1b17%22%5D
+19:35:15.805410 HTTP:  #249: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36089: interface conversion: interface is nil, not float64
+goroutine 333 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201464200, 0x79cc60, 0xc2005b3cf0, 0xc2005b3ce0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6de0, 0xc200b24ce0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6de0, 0x9bd570, 0xc200211240, 0xc201200a10)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc201200a10, 0xc2013fab60)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2015d9c60)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.813715 HTTP:  #250: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36090: interface conversion: interface is nil, not float64
+goroutine 334 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc20145cd00, 0x79cc60, 0xc200cbf760, 0xc200cbf750)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f63c0, 0xc2009165a0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f63c0, 0x9bd570, 0xc200211240, 0xc201223850)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc201223850, 0xc20145d410)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc201223850, 0xc20145d410)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc201223850, 0xc20145d410)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc201223850, 0xc20145d410)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc201223850, 0xc20145d410)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc201223850, 0xc20145d410)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2015d9d80)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.832457 HTTP:  #251: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36091: interface conversion: interface is nil, not float64
+goroutine 335 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201482640, 0x79cc60, 0xc200cbe060, 0xc200cbe050)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f64e0, 0xc200916da0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f64e0, 0x9bd570, 0xc200211240, 0xc201223b60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc201223b60, 0xc20145d680)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc201223b60, 0xc20145d680)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc201223b60, 0xc20145d680)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc201223b60, 0xc20145d680)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc201223b60, 0xc20145d680)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc201223b60, 0xc20145d680)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013ec480)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.850847 HTTP:  #252: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36092: interface conversion: interface is nil, not float64
+goroutine 336 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201464b40, 0x79cc60, 0xc200cbea00, 0xc200cbe9e0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6e40, 0xc200aebd40, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6e40, 0x9bd570, 0xc200211240, 0xc201200d20)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc201200d20, 0xc2013fadd0)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013ec5a0)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.923296 HTTP:  #253: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36093: interface conversion: interface is nil, not float64
+goroutine 337 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201482f80, 0x79cc60, 0xc2005ad0f0, 0xc2005ad0c0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6540, 0xc20048dcc0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6540, 0x9bd570, 0xc200211240, 0xc20100c000)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc20100c000, 0xc20145d8f0)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2015d9f30)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.940945 HTTP:  #254: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36094: interface conversion: interface is nil, not float64
+goroutine 338 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc2014ab480, 0x79cc60, 0xc2005aded0, 0xc2005adea0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6ea0, 0xc2004858c0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6ea0, 0x9bd570, 0xc200211240, 0xc200e9a690)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc200e9a690, 0xc20149b1a0)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013ec750)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.950671 HTTP:  #255: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36095: interface conversion: interface is nil, not float64
+goroutine 339 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc2016145c0, 0x79cc60, 0xc200551f00, 0xc200551ef0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6f00, 0xc200485fc0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6f00, 0x9bd570, 0xc200211240, 0xc200e9a9a0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc200e9a9a0, 0xc20149b4e0)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc201617120)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:15.969715 HTTP:  #256: POST /db/_bulk_docs
+2014/01/16 19:35:15 http: panic serving 127.0.0.1:36096: interface conversion: interface is nil, not float64
+goroutine 340 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc20162a140, 0x79cc60, 0xc200cab710, 0xc200cab700)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f65a0, 0xc20053e980, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f65a0, 0x9bd570, 0xc200211240, 0xc20100c460)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc20100c460, 0xc20145dc30)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013ec870)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:16.112446 HTTP:  #257: POST /db/_bulk_docs
+2014/01/16 19:35:16 http: panic serving 127.0.0.1:36097: interface conversion: interface is nil, not float64
+goroutine 341 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201614e80, 0x79cc60, 0xc200cabf80, 0xc200cabf70)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6f60, 0xc200a723a0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6f60, 0x9bd570, 0xc200211240, 0xc200e9ab60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc200e9ab60, 0xc20149b820)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013eca20)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:16.161449 HTTP:  #258: POST /db/_bulk_docs
+2014/01/16 19:35:16 http: panic serving 127.0.0.1:36098: interface conversion: interface is nil, not float64
+goroutine 342 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc20162afc0, 0x79cc60, 0xc200caa020, 0xc200caa000)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc20164b0c0, 0xc200a72aa0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc20164b0c0, 0x9bd570, 0xc200211240, 0xc200e9ae70)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc200e9ae70, 0xc20149bb60)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc201617360)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:16.177733 HTTP:  #259: POST /db/_bulk_docs
+2014/01/16 19:35:16 http: panic serving 127.0.0.1:36099: interface conversion: interface is nil, not float64
+goroutine 343 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc201659a80, 0x79cc60, 0xc200caabd0, 0xc200caaba0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6600, 0xc201110a40, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6600, 0x9bd570, 0xc200211240, 0xc20100ccb0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc20100ccb0, 0xc201662000)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc201617510)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+19:35:16.197117 HTTP:  #260: POST /db/_bulk_docs
+2014/01/16 19:35:16 http: panic serving 127.0.0.1:36100: interface conversion: interface is nil, not float64
+goroutine 344 [running]:
+net/http.func·007()
+	/usr/local/go/src/pkg/net/http/server.go:1022 +0xac
+github.com/couchbaselabs/sync_gateway/db.ParseRevisions(0xc20166f3c0, 0x79cc60, 0xc2003bb8a0, 0xc2003bb860)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/revtree.go:327 +0x1bf
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleBulkDocs(0xc2013f6660, 0xc200db7140, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/bulk_api.go:259 +0x8c4
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc2013f6660, 0x9bd570, 0xc200211240, 0xc2018bef50)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:130 +0x1f4
+github.com/couchbaselabs/sync_gateway/rest.func·005(0xc200211240, 0xc2018bef50, 0xc201662340)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:78 +0x7a
+net/http.HandlerFunc.ServeHTTP(0xc20020bb60, 0xc200211240, 0xc2018bef50, 0xc201662340)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2002072d0, 0xc200211240, 0xc2018bef50, 0xc201662340)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1d9
+github.com/couchbaselabs/sync_gateway/rest.func·007(0xc200211240, 0xc2018bef50, 0xc201662340)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:153 +0xd2
+net/http.HandlerFunc.ServeHTTP(0xc2001c4e00, 0xc200211240, 0xc2018bef50, 0xc201662340)
+	/usr/local/go/src/pkg/net/http/server.go:1149 +0x3e
+net/http.serverHandler.ServeHTTP(0xc2001e3320, 0xc200211240, 0xc2018bef50, 0xc201662340)
+	/usr/local/go/src/pkg/net/http/server.go:1517 +0x16c
+net/http.(*conn).serve(0xc2013ecbd0)
+	/usr/local/go/src/pkg/net/http/server.go:1096 +0x765
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1564 +0x266
+api-test2 has 0 docs expecting 0
+api-test1 has 0 docs expecting 0
+api-test3 has 0 docs expecting 0
+# verify local-replicated num-docs 0-2
+ok 77 verified api-test2 numdocs 0 == 0
+ok 78 verified api-test1 numdocs 0 == 0
+ok 79 verified api-test3 numdocs 0 == 0
+# cleanup cb bucket
+# done
+
+1..79
+# tests 79
+# pass  79
+
+# ok
+
