@@ -1,0 +1,840 @@
+andrey@baranouski:~/couchbase_source/cblite-tests$ CONF_FILE='local_android' node tests/cbl-replication-mismatch-2-gateways.js
+http server started on: http://127.0.0.1:8189
+LiteServAndroid launched on 8080
+TAP version 13
+# start test client
+ok 1 no error, LiteServe running on our port
+running /home/andrey/couchbase_source/sync_gateway/bin/sync_gateway [ '-interface',
+  ':9888',
+  '-adminInterface',
+  ':9889',
+  '-url',
+  'walrus:',
+  '-bucket',
+  'db',
+  '/home/andrey/couchbase_source/cblite-tests/config/admin_party.json' ]
+15:45:43.241195 Enabling logging: [CRUD REST+]
+15:45:43.241223 ==== Couchbase Sync Gateway/0.93 ====
+15:45:43.241232 Configured Go to use all 4 CPUs; setenv GOMAXPROCS to override this
+15:45:43.241242 Opening db /db as bucket "db", pool "default", server <walrus:>
+15:45:43.241271 Opening Walrus database db on <walrus:>
+15:45:43.241667     Reset guest user to config
+15:45:43.241674 Starting admin server on :9889
+15:45:43.243003 Starting server on :9888 ...
+15:45:44.424890 HTTP:  #001: GET /db/
+# start syncgateway
+ok 2 no error, Sync Gateway running on port 9888: undefined
+ok 3 no error, Sync Gateway reachable by: http://localhost:9888/db: null
+running /home/andrey/couchbase_source/sync_gateway/bin/sync_gateway [ '-interface',
+  ':9890',
+  '-adminInterface',
+  ':9891',
+  '-url',
+  'walrus:',
+  '-bucket',
+  'db',
+  '/home/andrey/couchbase_source/cblite-tests/config/admin_party.json' ]
+15:45:44.438659 Enabling logging: [CRUD REST+]
+15:45:44.438709 ==== Couchbase Sync Gateway/0.93 ====
+15:45:44.438724 Configured Go to use all 4 CPUs; setenv GOMAXPROCS to override this
+15:45:44.438741 Opening db /db as bucket "db", pool "default", server <walrus:>
+15:45:44.438798 Opening Walrus database db on <walrus:>
+15:45:44.439670     Reset guest user to config
+15:45:44.439686 Starting admin server on :9891
+15:45:44.442339 Starting server on :9890 ...
+15:45:45.704385 HTTP:  #001: GET /db/
+# start syncgateway2
+ok 4 no error, Sync Gateway running on port 9890: undefined
+ok 5 no error, Sync Gateway reachable by: http://localhost:9890/db: null
+# create test databases
+_replicate server: http://localhost:8080 source: mismatch-gateways-one -> target: http://10.0.2.2:9888/db
+_replicate server: http://localhost:8080 source: http://10.0.2.2:9888/db -> target: mismatch-gateways-one
+_replicate server: http://localhost:8080 source: mismatch-test-two -> target: http://10.0.2.2:9890/db
+15:45:47.260386 HTTP:  #002: GET /db/_local/b45acdfe1a00307f204583492c406b01756f7088
+15:45:47.260442 HTTP: #002:     --> 404 missing  (0.0 ms)
+15:45:47.266676 HTTP:  #003: GET /db/_local/1efe7860b33c9cc6b3338a1cda212cc1d405936e
+15:45:47.266705 HTTP: #003:     --> 404 missing  (0.0 ms)
+_replicate server: http://localhost:8080 source: http://10.0.2.2:9890/db -> target: mismatch-test-two
+15:45:47.401407 HTTP:  #004: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&style=all_docs
+15:45:47.462154 HTTP:  #002: GET /db/_local/646dcf05fb0b7c1fdb55640a039c519386d3f013
+15:45:47.462204 HTTP: #002:     --> 404 missing  (0.0 ms)
+# setup continuous push and pull from both client database
+ok 6 replication one ok
+ok 7 replication two ok
+_replicate server: http://localhost:8080 source: http://10.0.2.2:9888/db -> target: mismatch-test-two
+15:45:47.524042 HTTP:  #003: GET /db/_local/ee43d9c3e3d7fa810be20a0245b5661692c45d9f
+15:45:47.524084 HTTP: #003:     --> 404 missing  (0.0 ms)
+_replicate server: http://localhost:8080 source: mismatch-test-two -> target: http://10.0.2.2:9888/db
+15:45:47.639424 HTTP:  #004: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&style=all_docs
+15:45:47.649995 HTTP:  #005: GET /db/_local/624ece16dbb521de9210ecd95ff002297d393eab
+15:45:47.650137 HTTP: #005:     --> 404 missing  (0.0 ms)
+_replicate server: http://localhost:8080 source: http://localhost:9890/db -> target: mismatch-gateways-one
+15:45:47.773698 HTTP:  #006: GET /db/_changes?feed=longpoll&limit=50&heartbeat=300000&style=all_docs
+15:45:47.816486 HTTP:  #007: GET /db/_local/c46a6ffd35bfff6a9d5a586ca72480da73c1d342
+15:45:47.816551 HTTP: #007:     --> 404 missing  (0.0 ms)
+_replicate server: http://localhost:8080 source: mismatch-gateways-one -> target: http://localhost:9890/db
+# setup continuous push and pull from both client database
+ok 8 replication one ok
+ok 9 replication two ok
+15:45:48.354119 HTTP:  #008: POST /db/_revs_diff
+15:45:48.576736 HTTP:  #009: POST /db/_bulk_docs
+15:45:48.652083 CRUD: Stored doc "mismatch-gateways-one_0" / "1-559d937f-5f2a-4e1c-8386-5b287cbfadea"
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal 0xb code=0x1 addr=0x0 pc=0x4c0a67]
+
+goroutine 35 [running]:
+runtime.panic(0x8f7020, 0x11a3ce8)
+	/usr/local/go/src/pkg/runtime/panic.c:266 +0xb6
+github.com/couchbaselabs/sync_gateway/db.func·008()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:108 +0x107
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).changesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:126 +0x23d
+
+goroutine 1 [IO wait]:
+net.runtime_pollWait(0x7f7c15a58800, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc21014e990, 0x72, 0x7f7c15a520c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc21014e990, 0xb, 0x7f7c15a520c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).accept(0xc21014e930, 0xaa8870, 0x0, 0x7f7c15a520c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_unix.go:382 +0x2c2
+net.(*TCPListener).AcceptTCP(0xc2101305f0, 0x471d2b, 0x7f7c158c2c08, 0x471d2b)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:233 +0x47
+net.(*TCPListener).Accept(0xc2101305f0, 0x7f7c15a58950, 0xc2103b5af8, 0xc210f3c300, 0x0)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:243 +0x27
+net/http.(*Server).Serve(0xc210138a00, 0x7f7c15a57908, 0xc2101305f0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:1622 +0x91
+github.com/couchbaselabs/sync_gateway/base.ListenAndServeHTTP(0x7fffdcf5e1ca, 0x5, 0x0, 0x0, 0x0, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/base/http_listener.go:44 +0x396
+github.com/couchbaselabs/sync_gateway/rest.(*ServerConfig).serve(0xc2100b9820, 0x7fffdcf5e1ca, 0x5, 0x7f7c15a522e0, 0xc21014b380)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:315 +0x95
+github.com/couchbaselabs/sync_gateway/rest.RunServer(0xc2100b9820)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:353 +0x6cb
+github.com/couchbaselabs/sync_gateway/rest.ServerMain()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:359 +0x2b
+main.main()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/main.go:16 +0x1a
+
+goroutine 4 [sleep]:
+time.Sleep(0x9502f900)
+	/usr/local/go/src/pkg/runtime/time.goc:31 +0x31
+github.com/couchbaselabs/sync_gateway/db.func·003()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_cache.go:66 +0x62
+created by github.com/couchbaselabs/sync_gateway/db.(*changeCache).Init
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_cache.go:68 +0x1be
+
+goroutine 5 [semacquire]:
+sync.runtime_Syncsemacquire(0xc210049b90)
+	/usr/local/go/src/pkg/runtime/sema.goc:257 +0xca
+sync.(*Cond).Wait(0xc210049b80)
+	/usr/local/go/src/pkg/sync/cond.go:62 +0x89
+github.com/couchbaselabs/walrus.(*queue).pull(0xc2100ad3d0, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/queue.go:36 +0xa2
+github.com/couchbaselabs/walrus.(*tapFeedImpl).run(0xc2100732d0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/tap.go:105 +0x4b
+created by github.com/couchbaselabs/walrus.(*lolrus).StartTapFeed
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/tap.go:78 +0x1ce
+
+goroutine 6 [chan receive]:
+github.com/couchbaselabs/sync_gateway/db.func·006()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_listener.go:49 +0xb5
+created by github.com/couchbaselabs/sync_gateway/db.(*changeListener).Start
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_listener.go:63 +0x25e
+
+goroutine 7 [runnable]:
+encoding/json.stateInString(0xc21080a920, 0x32, 0x0)
+	/usr/local/go/src/pkg/encoding/json/scanner.go:324
+encoding/json.checkValid(0xc210aa4080, 0x569, 0x569, 0xc21080a920, 0x0, ...)
+	/usr/local/go/src/pkg/encoding/json/scanner.go:24 +0xb8
+encoding/json.Unmarshal(0xc210aa4080, 0x569, 0x569, 0x8f8800, 0xc21108cb20, ...)
+	/usr/local/go/src/pkg/encoding/json/decode.go:67 +0x62
+github.com/couchbaselabs/sync_gateway/db.(*document).UnmarshalJSON(0xc21108ca80, 0xc210aa4080, 0x569, 0x569, 0x7f7c10109b00, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/document.go:244 +0x2eb
+encoding/json.(*decodeState).object(0xc21080a500, 0x959920, 0xc21108ca80, 0x160)
+	/usr/local/go/src/pkg/encoding/json/decode.go:449 +0xe7
+encoding/json.(*decodeState).value(0xc21080a500, 0x959920, 0xc21108ca80, 0x160)
+	/usr/local/go/src/pkg/encoding/json/decode.go:284 +0x33c
+encoding/json.(*decodeState).unmarshal(0xc21080a500, 0x959920, 0xc21108ca80, 0x0, 0x0)
+	/usr/local/go/src/pkg/encoding/json/decode.go:144 +0x18d
+encoding/json.Unmarshal(0xc210aa4080, 0x569, 0x569, 0x959920, 0xc21108ca80, ...)
+	/usr/local/go/src/pkg/encoding/json/decode.go:73 +0xd6
+github.com/couchbaselabs/sync_gateway/db.unmarshalDocument(0xc2110596e0, 0x17, 0xc210aa4080, 0x569, 0x569, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/document.go:64 +0xe5
+github.com/couchbaselabs/sync_gateway/db.(*DatabaseContext).watchDocChanges(0xc2100b4640)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/assimilator.go:17 +0x13c
+created by github.com/couchbaselabs/sync_gateway/db.NewDatabaseContext
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/database.go:114 +0x339
+
+goroutine 9 [IO wait]:
+net.runtime_pollWait(0x7f7c15a588a8, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc2100f7060, 0x72, 0x7f7c15a520c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc2100f7060, 0xb, 0x7f7c15a520c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).accept(0xc2100f7000, 0xaa8870, 0x0, 0x7f7c15a520c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_unix.go:382 +0x2c2
+net.(*TCPListener).AcceptTCP(0xc2100001e0, 0x18, 0xc21003c050, 0x471b03)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:233 +0x47
+net.(*TCPListener).Accept(0xc2100001e0, 0x50, 0x9a8c00, 0x3, 0x7fffdcf5e1e0)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:243 +0x27
+net/http.(*Server).Serve(0xc2100ac1e0, 0x7f7c15a57908, 0xc2100001e0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:1622 +0x91
+github.com/couchbaselabs/sync_gateway/base.ListenAndServeHTTP(0x7fffdcf5e1e0, 0x5, 0x0, 0x0, 0x0, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/base/http_listener.go:44 +0x396
+github.com/couchbaselabs/sync_gateway/rest.(*ServerConfig).serve(0xc2100b9820, 0x7fffdcf5e1e0, 0x5, 0x7f7c15a522e0, 0xc2100f31c0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:315 +0x95
+created by github.com/couchbaselabs/sync_gateway/rest.RunServer
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:351 +0x5b0
+
+goroutine 10 [IO wait]:
+net.runtime_pollWait(0x7f7c15a58758, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc21014eb50, 0x72, 0x7f7c15a520c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc21014eb50, 0xb, 0x7f7c15a520c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).Read(0xc21014eaf0, 0xc210153000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/fd_unix.go:204 +0x2a0
+net.(*conn).Read(0xc210130610, 0xc210153000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/net.go:122 +0xc5
+net/http.(*liveSwitchReader).Read(0xc210152028, 0xc210153000, 0x1000, 0x1000, 0xc2101540c0, ...)
+	/usr/local/go/src/pkg/net/http/server.go:204 +0xa5
+io.(*LimitedReader).Read(0xc21014b3a0, 0xc210153000, 0x1000, 0x1000, 0x4cdfb2, ...)
+	/usr/local/go/src/pkg/io/io.go:398 +0xbb
+bufio.(*Reader).fill(0xc21014c240)
+	/usr/local/go/src/pkg/bufio/bufio.go:91 +0x110
+bufio.(*Reader).ReadSlice(0xc21014c240, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:274 +0x204
+bufio.(*Reader).ReadLine(0xc21014c240, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:305 +0x63
+net/textproto.(*Reader).readLineSlice(0xc210140ba0, 0x7f7c15a49000, 0x800840, 0x7f7c1099ace8, 0x4212a2, ...)
+	/usr/local/go/src/pkg/net/textproto/reader.go:55 +0x61
+net/textproto.(*Reader).ReadLine(0xc210140ba0, 0xc210038c30, 0x0, 0xc210155000, 0x0)
+	/usr/local/go/src/pkg/net/textproto/reader.go:36 +0x27
+net/http.ReadRequest(0xc21014c240, 0xc210038c30, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/request.go:526 +0x88
+net/http.(*conn).readRequest(0xc210152000, 0x0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:575 +0x1bb
+net/http.(*conn).serve(0xc210152000)
+	/usr/local/go/src/pkg/net/http/server.go:1123 +0x3b4
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 33 [runnable]:
+syscall.Syscall(0x1, 0xa, 0xc21104b000, 0xe7, 0xe7, ...)
+	/usr/local/go/src/pkg/syscall/asm_linux_amd64.s:18 +0x5
+syscall.write(0xa, 0xc21104b000, 0xe7, 0x1000, 0x77, ...)
+	/usr/local/go/src/pkg/syscall/zsyscall_linux_amd64.go:1228 +0x72
+syscall.Write(0xa, 0xc21104b000, 0xe7, 0x1000, 0x4, ...)
+	/usr/local/go/src/pkg/syscall/syscall_unix.go:151 +0x5c
+net.(*netFD).Write(0xc21096af50, 0xc21104b000, 0xe7, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/fd_unix.go:289 +0x22a
+net.(*conn).Write(0xc2103b5af8, 0xc21104b000, 0xe7, 0x1000, 0x8005a0, ...)
+	/usr/local/go/src/pkg/net/net.go:130 +0xc5
+bufio.(*Writer).flush(0xc2110c77c0, 0xc2107b3a00, 0x1)
+	/usr/local/go/src/pkg/bufio/bufio.go:494 +0xa1
+bufio.(*Writer).Flush(0xc2110c77c0, 0x0, 0x0)
+	/usr/local/go/src/pkg/bufio/bufio.go:483 +0x27
+net/http.(*response).finishRequest(0xc21108b780)
+	/usr/local/go/src/pkg/net/http/server.go:1002 +0xa0
+net/http.(*conn).serve(0xc210f3c300)
+	/usr/local/go/src/pkg/net/http/server.go:1171 +0x7e8
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 27 [runnable]:
+github.com/couchbaselabs/sync_gateway/db.func·009()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:188 +0x77d
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).MultiChangesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:272 +0x23c
+
+goroutine 29 [select]:
+github.com/couchbaselabs/sync_gateway/rest.(*handler).sendSimpleChanges(0xc210757d80, 0xc210b0de40, 0x0, 0x32, 0x10001, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:173 +0x86b
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleChanges(0xc210757d80, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:131 +0x972
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc210757d80, 0xa9f980, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:159 +0x359
+github.com/couchbaselabs/sync_gateway/rest.func·010(0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:86 +0x7c
+net/http.HandlerFunc.ServeHTTP(0xc2100b5ae0, 0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2100bd050, 0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1dc
+github.com/couchbaselabs/sync_gateway/rest.func·012(0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:179 +0xc8
+net/http.HandlerFunc.ServeHTTP(0xc21014b380, 0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+net/http.serverHandler.ServeHTTP(0xc210138a00, 0x7f7c15a58aa8, 0xc210948460, 0xc21025ddd0)
+	/usr/local/go/src/pkg/net/http/server.go:1597 +0x16e
+net/http.(*conn).serve(0xc210fea680)
+	/usr/local/go/src/pkg/net/http/server.go:1167 +0x7b7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 31 [chan receive]:
+github.com/couchbaselabs/sync_gateway/db.func·009()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:188 +0x77d
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).MultiChangesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:272 +0x23c
+
+goroutine 26 [select]:
+github.com/couchbaselabs/sync_gateway/rest.(*handler).sendSimpleChanges(0xc210757bd0, 0xc2110bd840, 0x0, 0x32, 0x10001, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:173 +0x86b
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleChanges(0xc210757bd0, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:131 +0x972
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc210757bd0, 0xa9f980, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:159 +0x359
+github.com/couchbaselabs/sync_gateway/rest.func·010(0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:86 +0x7c
+net/http.HandlerFunc.ServeHTTP(0xc2100b5ae0, 0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2100bd050, 0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1dc
+github.com/couchbaselabs/sync_gateway/rest.func·012(0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:179 +0xc8
+net/http.HandlerFunc.ServeHTTP(0xc21014b380, 0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+net/http.serverHandler.ServeHTTP(0xc210138a00, 0x7f7c15a58aa8, 0xc210c67f00, 0xc21025d750)
+	/usr/local/go/src/pkg/net/http/server.go:1597 +0x16e
+net/http.(*conn).serve(0xc210fea580)
+	/usr/local/go/src/pkg/net/http/server.go:1167 +0x7b7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 36 [runnable]:
+github.com/couchbaselabs/sync_gateway/db.func·008()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:96
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).changesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:126 +0x23d
+15:45:50.307461 HTTP:  #005: POST /db/_revs_diff
+15:45:50.508618 HTTP:  #006: POST /db/_bulk_docs
+15:45:50.587741 CRUD: Stored doc "mismatch-test-two_0" / "1-5ec70af6-ce04-4659-ae51-06bf5c740b76"
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal 0xb code=0x1 addr=0x0 pc=0x4c0a67]
+
+goroutine 31 [running]:
+runtime.panic(0x8f7020, 0x11a3ce8)
+	/usr/local/go/src/pkg/runtime/panic.c:266 +0xb6
+github.com/couchbaselabs/sync_gateway/db.func·008()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:108 +0x107
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).changesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:126 +0x23d
+
+goroutine 1 [IO wait]:
+net.runtime_pollWait(0x7fcb6eeebfb0, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc210148df0, 0x72, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc210148df0, 0xb, 0x7fcb6eee60c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).accept(0xc210148d90, 0xaa8870, 0x0, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_unix.go:382 +0x2c2
+net.(*TCPListener).AcceptTCP(0xc21012f5b0, 0x471d2b, 0x7fcb6ed56c08, 0x471d2b)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:233 +0x47
+net.(*TCPListener).Accept(0xc21012f5b0, 0x7fcb6eeec9e8, 0xc21091f3a8, 0xc2108be600, 0x0)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:243 +0x27
+net/http.(*Server).Serve(0xc210139820, 0x7fcb6eeeb0b8, 0xc21012f5b0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:1622 +0x91
+github.com/couchbaselabs/sync_gateway/base.ListenAndServeHTTP(0x7fff12df71ca, 0x5, 0x0, 0x0, 0x0, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/base/http_listener.go:44 +0x396
+github.com/couchbaselabs/sync_gateway/rest.(*ServerConfig).serve(0xc2100b7be0, 0x7fff12df71ca, 0x5, 0x7fcb6eee62e0, 0xc210147320)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:315 +0x95
+github.com/couchbaselabs/sync_gateway/rest.RunServer(0xc2100b7be0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:353 +0x6cb
+github.com/couchbaselabs/sync_gateway/rest.ServerMain()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:359 +0x2b
+main.main()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/main.go:16 +0x1a
+
+goroutine 4 [sleep]:
+time.Sleep(0x9502f900)
+	/usr/local/go/src/pkg/runtime/time.goc:31 +0x31
+github.com/couchbaselabs/sync_gateway/db.func·003()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_cache.go:66 +0x62
+created by github.com/couchbaselabs/sync_gateway/db.(*changeCache).Init
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_cache.go:68 +0x1be
+
+goroutine 5 [semacquire]:
+sync.runtime_Syncsemacquire(0xc210049b90)
+	/usr/local/go/src/pkg/runtime/sema.goc:257 +0xca
+sync.(*Cond).Wait(0xc210049b80)
+	/usr/local/go/src/pkg/sync/cond.go:62 +0x89
+github.com/couchbaselabs/walrus.(*queue).pull(0xc2100ae3d0, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/queue.go:36 +0xa2
+github.com/couchbaselabs/walrus.(*tapFeedImpl).run(0xc2100722d0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/tap.go:105 +0x4b
+created by github.com/couchbaselabs/walrus.(*lolrus).StartTapFeed
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/couchbaselabs/walrus/tap.go:78 +0x1ce
+
+goroutine 6 [chan receive]:
+github.com/couchbaselabs/sync_gateway/db.func·006()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_listener.go:49 +0xb5
+created by github.com/couchbaselabs/sync_gateway/db.(*changeListener).Start
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/change_listener.go:63 +0x25e
+
+goroutine 7 [chan receive]:
+github.com/couchbaselabs/sync_gateway/db.(*DatabaseContext).watchDocChanges(0xc2100b4640)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/assimilator.go:16 +0xa5
+created by github.com/couchbaselabs/sync_gateway/db.NewDatabaseContext
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/database.go:114 +0x339
+
+goroutine 9 [IO wait]:
+net.runtime_pollWait(0x7fcb6eeec058, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc2100fc060, 0x72, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc2100fc060, 0xb, 0x7fcb6eee60c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).accept(0xc2100fc000, 0xaa8870, 0x0, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_unix.go:382 +0x2c2
+net.(*TCPListener).AcceptTCP(0xc2100001e0, 0x18, 0xc210086850, 0x471b03)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:233 +0x47
+net.(*TCPListener).Accept(0xc2100001e0, 0x50, 0x9a8c00, 0x3, 0x7fff12df71e0)
+	/usr/local/go/src/pkg/net/tcpsock_posix.go:243 +0x27
+net/http.(*Server).Serve(0xc21010e0f0, 0x7fcb6eeeb0b8, 0xc2100001e0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:1622 +0x91
+github.com/couchbaselabs/sync_gateway/base.ListenAndServeHTTP(0x7fff12df71e0, 0x5, 0x0, 0x0, 0x0, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/base/http_listener.go:44 +0x396
+github.com/couchbaselabs/sync_gateway/rest.(*ServerConfig).serve(0xc2100b7be0, 0x7fff12df71e0, 0x5, 0x7fcb6eee62e0, 0xc210085640)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:315 +0x95
+created by github.com/couchbaselabs/sync_gateway/rest.RunServer
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/config.go:351 +0x5b0
+
+goroutine 10 [IO wait]:
+net.runtime_pollWait(0x7fcb6eeebf08, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc210148fb0, 0x72, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc210148fb0, 0xb, 0x7fcb6eee60c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).Read(0xc210148f50, 0xc21014d000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/fd_unix.go:204 +0x2a0
+net.(*conn).Read(0xc21012f5d0, 0xc21014d000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/net.go:122 +0xc5
+net/http.(*liveSwitchReader).Read(0xc21005cd28, 0xc21014d000, 0x1000, 0x1000, 0xc210049480, ...)
+	/usr/local/go/src/pkg/net/http/server.go:204 +0xa5
+io.(*LimitedReader).Read(0xc210147340, 0xc21014d000, 0x1000, 0x1000, 0x4cdfb2, ...)
+	/usr/local/go/src/pkg/io/io.go:398 +0xbb
+bufio.(*Reader).fill(0xc21014a120)
+	/usr/local/go/src/pkg/bufio/bufio.go:91 +0x110
+bufio.(*Reader).ReadSlice(0xc21014a120, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:274 +0x204
+bufio.(*Reader).ReadLine(0xc21014a120, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:305 +0x63
+net/textproto.(*Reader).readLineSlice(0xc2100b9750, 0x7fcb6eedd5e0, 0x800840, 0x7fcb69e2ece8, 0x4212a2, ...)
+	/usr/local/go/src/pkg/net/textproto/reader.go:55 +0x61
+net/textproto.(*Reader).ReadLine(0xc2100b9750, 0xc210038ea0, 0x0, 0xc21014e000, 0x0)
+	/usr/local/go/src/pkg/net/textproto/reader.go:36 +0x27
+net/http.ReadRequest(0xc21014a120, 0xc210038ea0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/request.go:526 +0x88
+net/http.(*conn).readRequest(0xc21005cd00, 0x0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:575 +0x1bb
+net/http.(*conn).serve(0xc21005cd00)
+	/usr/local/go/src/pkg/net/http/server.go:1123 +0x3b4
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 27 [runnable]:
+github.com/couchbaselabs/sync_gateway/db.func·009()
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:188 +0x77d
+created by github.com/couchbaselabs/sync_gateway/db.(*Database).MultiChangesFeed
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/db/changes.go:272 +0x23c
+
+goroutine 29 [IO wait]:
+net.runtime_pollWait(0x7fcb6eeebe60, 0x72, 0x0)
+	/usr/local/go/src/pkg/runtime/netpoll.goc:116 +0x6a
+net.(*pollDesc).Wait(0xc21060d610, 0x72, 0x7fcb6eee60c0, 0xb)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:81 +0x34
+net.(*pollDesc).WaitRead(0xc21060d610, 0xb, 0x7fcb6eee60c0)
+	/usr/local/go/src/pkg/net/fd_poll_runtime.go:86 +0x30
+net.(*netFD).Read(0xc21060d5b0, 0xc2109af000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/fd_unix.go:204 +0x2a0
+net.(*conn).Read(0xc21091f3a8, 0xc2109af000, 0x1000, 0x1000, 0x0, ...)
+	/usr/local/go/src/pkg/net/net.go:122 +0xc5
+net/http.(*liveSwitchReader).Read(0xc2108be628, 0xc2109af000, 0x1000, 0x1000, 0x7fcb00000000, ...)
+	/usr/local/go/src/pkg/net/http/server.go:204 +0xa5
+io.(*LimitedReader).Read(0xc21063d640, 0xc2109af000, 0x1000, 0x1000, 0x10, ...)
+	/usr/local/go/src/pkg/io/io.go:398 +0xbb
+bufio.(*Reader).fill(0xc210791a80)
+	/usr/local/go/src/pkg/bufio/bufio.go:91 +0x110
+bufio.(*Reader).ReadSlice(0xc210791a80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:274 +0x204
+bufio.(*Reader).ReadLine(0xc210791a80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/local/go/src/pkg/bufio/bufio.go:305 +0x63
+net/textproto.(*Reader).readLineSlice(0xc2107fff90, 0x7fcb6eedd000, 0x800840, 0x7fcb68dcace8, 0x4212a2, ...)
+	/usr/local/go/src/pkg/net/textproto/reader.go:55 +0x61
+net/textproto.(*Reader).ReadLine(0xc2107fff90, 0xc2109d61a0, 0x0, 0xc2109a4000, 0x0)
+	/usr/local/go/src/pkg/net/textproto/reader.go:36 +0x27
+net/http.ReadRequest(0xc210791a80, 0xc2109d61a0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/request.go:526 +0x88
+net/http.(*conn).readRequest(0xc2108be600, 0x0, 0x0, 0x0)
+	/usr/local/go/src/pkg/net/http/server.go:575 +0x1bb
+net/http.(*conn).serve(0xc2108be600)
+	/usr/local/go/src/pkg/net/http/server.go:1123 +0x3b4
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+
+goroutine 26 [select]:
+github.com/couchbaselabs/sync_gateway/rest.(*handler).sendSimpleChanges(0xc21075ee10, 0xc21082c720, 0x0, 0x32, 0x10001, ...)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:173 +0x86b
+github.com/couchbaselabs/sync_gateway/rest.(*handler).handleChanges(0xc21075ee10, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/changes_api.go:131 +0x972
+github.com/couchbaselabs/sync_gateway/rest.(*handler).invoke(0xc21075ee10, 0xa9f980, 0x0, 0x0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:159 +0x359
+github.com/couchbaselabs/sync_gateway/rest.func·010(0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/handler.go:86 +0x7c
+net/http.HandlerFunc.ServeHTTP(0xc2100fdba0, 0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+github.com/gorilla/mux.(*Router).ServeHTTP(0xc2100bdfa0, 0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/home/andrey/couchbase_source/sync_gateway/vendor/src/github.com/gorilla/mux/mux.go:86 +0x1dc
+github.com/couchbaselabs/sync_gateway/rest.func·012(0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/home/andrey/couchbase_source/sync_gateway/src/github.com/couchbaselabs/sync_gateway/rest/routing.go:179 +0xc8
+net/http.HandlerFunc.ServeHTTP(0xc210147320, 0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/usr/local/go/src/pkg/net/http/server.go:1220 +0x40
+net/http.serverHandler.ServeHTTP(0xc210139820, 0x7fcb6eeecb40, 0xc210a5f780, 0xc2109d65b0)
+	/usr/local/go/src/pkg/net/http/server.go:1597 +0x16e
+net/http.(*conn).serve(0xc2108ee400)
+	/usr/local/go/src/pkg/net/http/server.go:1167 +0x7b7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/pkg/net/http/server.go:1644 +0x28b
+# load databases
+ok 10 numDocs must be an even number
+ok 11 docid
+ok 12 docid
+ok 13 docid
+ok 14 docid
+ok 15 docid
+ok 16 docid
+ok 17 docid
+ok 18 docid
+ok 19 docid
+ok 20 docid
+ok 21 docid
+ok 22 docid
+ok 23 docid
+ok 24 docid
+ok 25 docid
+ok 26 docid
+ok 27 docid
+ok 28 docid
+ok 29 docid
+ok 30 docid
+ok 31 docid
+ok 32 docid
+ok 33 docid
+ok 34 docid
+ok 35 docid
+ok 36 docid
+ok 37 docid
+ok 38 docid
+ok 39 docid
+ok 40 docid
+ok 41 docid
+ok 42 docid
+ok 43 docid
+ok 44 docid
+ok 45 docid
+ok 46 docid
+ok 47 docid
+ok 48 docid
+ok 49 docid
+ok 50 docid
+ok 51 docid
+ok 52 docid
+ok 53 docid
+ok 54 docid
+ok 55 docid
+ok 56 docid
+ok 57 docid
+ok 58 docid
+ok 59 docid
+ok 60 docid
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+mismatch-test-two has 25 docs expecting 50
+mismatch-gateways-one has 25 docs expecting 50
+# verify dbs have same number of docs
+not ok 61 verified mismatch-test-two numdocs 50 == 25
+  ---
+    file:   /home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js
+    line:   624
+    column: 13
+    stack:  
+      - getCaller (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:418:17)
+      - assert (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:21:16)
+      - Function.equal (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:162:10)
+      - Test._testAssert (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-test.js:87:16)
+      - /home/andrey/couchbase_source/cblite-tests/tests/common.js:723:13
+      - Object.async.whilst (/home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js:624:13)
+      - /home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js:620:23
+      - /home/andrey/couchbase_source/cblite-tests/tests/common.js:716:15
+      - Request._callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/lib/hoax-core.js:21:11)
+      - Request.self.callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js:122:22)
+    found:  50
+    wanted: 25
+  ...
+not ok 62 verified mismatch-gateways-one numdocs 50 == 25
+  ---
+    file:   /home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js
+    line:   624
+    column: 13
+    stack:  
+      - getCaller (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:418:17)
+      - assert (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:21:16)
+      - Function.equal (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-assert.js:162:10)
+      - Test._testAssert (/home/andrey/couchbase_source/cblite-tests/node_modules/tap/lib/tap-test.js:87:16)
+      - /home/andrey/couchbase_source/cblite-tests/tests/common.js:723:13
+      - Object.async.whilst (/home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js:624:13)
+      - /home/andrey/couchbase_source/cblite-tests/node_modules/async/lib/async.js:620:23
+      - /home/andrey/couchbase_source/cblite-tests/tests/common.js:716:15
+      - Request._callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/lib/hoax-core.js:21:11)
+      - Request.self.callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js:122:22)
+    found:  50
+    wanted: 25
+  ...
+{
+  "date": "Mon Mar 10 2014 15:47:56 GMT+0300 (FET)",
+  "process": {
+    "pid": 10972,
+    "uid": 1000,
+    "gid": 1000,
+    "cwd": "/home/andrey/couchbase_source/couchbase-lite-android-liteserv",
+    "execPath": "/usr/bin/nodejs",
+    "version": "v0.10.26",
+    "argv": [
+      "node",
+      "/home/andrey/couchbase_source/cblite-tests/tests/cbl-replication-mismatch-2-gateways.js"
+    ],
+    "memoryUsage": {
+      "rss": 43229184,
+      "heapTotal": 51000320,
+      "heapUsed": 16518344
+    }
+  },
+  "os": {
+    "loadavg": [
+      0.79833984375,
+      0.7958984375,
+      0.9931640625
+    ],
+    "uptime": 7902.709350373
+  },
+  "trace": [
+    {
+      "column": 23,
+      "file": "/home/andrey/couchbase_source/cblite-tests/tests/cbl-replication-mismatch-2-gateways.js",
+      "function": null,
+      "line": 91,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 9,
+      "file": "/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/lib/hoax-core.js",
+      "function": "Request._callback",
+      "line": 16,
+      "method": "_callback",
+      "native": false
+    },
+    {
+      "column": 22,
+      "file": "/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js",
+      "function": "self.callback",
+      "line": 122,
+      "method": "callback",
+      "native": false
+    },
+    {
+      "column": 17,
+      "file": "events.js",
+      "function": "Request.EventEmitter.emit",
+      "line": 95,
+      "method": "EventEmitter.emit",
+      "native": false
+    },
+    {
+      "column": 10,
+      "file": "/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js",
+      "function": "ClientRequest.self.clientErrorHandler",
+      "line": 225,
+      "method": "self.clientErrorHandler",
+      "native": false
+    },
+    {
+      "column": 17,
+      "file": "events.js",
+      "function": "ClientRequest.EventEmitter.emit",
+      "line": 95,
+      "method": "EventEmitter.emit",
+      "native": false
+    },
+    {
+      "column": 9,
+      "file": "http.js",
+      "function": "Socket.socketErrorListener",
+      "line": 1547,
+      "method": "socketErrorListener",
+      "native": false
+    },
+    {
+      "column": 17,
+      "file": "events.js",
+      "function": "Socket.EventEmitter.emit",
+      "line": 95,
+      "method": "EventEmitter.emit",
+      "native": false
+    },
+    {
+      "column": 14,
+      "file": "net.js",
+      "function": null,
+      "line": 440,
+      "method": null,
+      "native": false
+    },
+    {
+      "column": 13,
+      "file": "node.js",
+      "function": "process._tickDomainCallback",
+      "line": 459,
+      "method": "_tickDomainCallback",
+      "native": false
+    }
+  ],
+  "stack": [
+    "TypeError: Cannot read property 'results' of undefined",
+    "    at /home/andrey/couchbase_source/cblite-tests/tests/cbl-replication-mismatch-2-gateways.js:91:23",
+    "    at Request._callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/lib/hoax-core.js:16:9)",
+    "    at self.callback (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js:122:22)",
+    "    at Request.EventEmitter.emit (events.js:95:17)",
+    "    at ClientRequest.self.clientErrorHandler (/home/andrey/couchbase_source/cblite-tests/node_modules/coax/node_modules/hoax/node_modules/request/main.js:225:10)",
+    "    at ClientRequest.EventEmitter.emit (events.js:95:17)",
+    "    at Socket.socketErrorListener (http.js:1547:9)",
+    "    at Socket.EventEmitter.emit (events.js:95:17)",
+    "    at net.js:440:14",
+    "    at process._tickDomainCallback (node.js:459:13)"
+  ],
+  "level": "error",
+  "message": "uncaughtException: Cannot read property 'results' of undefined",
+  "timestamp": "2014-03-10T12:47:56.542Z"
+}
+
