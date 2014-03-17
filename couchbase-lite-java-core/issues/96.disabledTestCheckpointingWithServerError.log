@@ -1,0 +1,68 @@
+03-17 05:42:05.670    2867-2891/com.couchbase.cblite.test W/Database﹕ Error converting lastSequence: null to long.  Using 0
+03-17 05:42:05.690    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: queueObjects called with 2 objects: [{doc1-1395049167512 #2-e47ff599-bc17-4617-80cd-194da2070ffd}, {doc2-1395049167512 #2-d2f4a185-3a9e-4c80-bb6e-7965834cab07}]
+03-17 05:42:05.700    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: inbox size before adding objects: 0
+03-17 05:42:05.700    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: 2 objects added to inbox.  inbox size: 2
+03-17 05:42:05.700    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: inbox.size() < capacity, schedule processing
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: delta 1395049325716 >= delay 500 --> using delay 0
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ scheduleWithDelay called with delay: 0 ms
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ not already scheduled
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ workExecutor.schedule() with delay: 0 ms
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: unschedule() called
+03-17 05:42:05.710    2867-2891/com.couchbase.cblite.test D/Database﹕ tried to cancel flushFuture, result: true
+03-17 05:42:05.720    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: processNow() called
+03-17 05:42:05.720    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: processNow() called, inbox size: 2
+03-17 05:42:05.720    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: inbox.size() <= capacity, adding 2 items to toProcess array
+03-17 05:42:05.720    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.support.Batcher@b1d7b6b8: invoking processor with 2 items
+03-17 05:42:05.740    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: processInbox() calling asyncTaskStarted()
+03-17 05:42:05.750    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: posting to /_revs_diff: {doc2-1395049167512=[2-d2f4a185-3a9e-4c80-bb6e-7965834cab07], doc1-1395049167512=[2-e47ff599-bc17-4617-80cd-194da2070ffd]}
+03-17 05:42:05.750    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: asyncTaskStarted() called, asyncTaskCount: 1
+03-17 05:42:05.760    2867-2891/com.couchbase.cblite.test D/Database﹕ asyncTaskStarted() updated asyncTaskCount to 2
+03-17 05:42:05.780    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.replicator.Replication$6@b1e15c40|Thread[pool-11-thread-1,5,main]: fetchRemoteCheckpointDoc() calling asyncTaskFinished()
+03-17 05:42:05.790    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: asyncTaskFinished() called, asyncTaskCount: 2 numTasks: 1
+03-17 05:42:05.790    2867-2891/com.couchbase.cblite.test D/Database﹕ asyncTaskFinished() updated asyncTaskCount to: 1
+03-17 05:42:05.810    2867-2889/com.couchbase.cblite.test D/Database﹕ execute() called with request: /db/_revs_diff
+03-17 05:42:05.850    2867-2891/com.couchbase.cblite.test D/Database﹕ com.couchbase.lite.replicator.Pusher$2@b1d959a8|Thread[pool-11-thread-1,5,main]: /_revs_diff response: {doc2-1395049167512={missing=[2-d2f4a185-3a9e-4c80-bb6e-7965834cab07]}, doc1-1395049167512={missing=[2-e47ff599-bc17-4617-80cd-194da2070ffd]}}
+03-17 05:42:07.600    2867-2891/com.couchbase.cblite.test D/dalvikvm﹕ GC_FOR_ALLOC freed 450K, 12% free 3927K/4440K, paused 28ms, total 36ms
+03-17 05:42:08.160    2867-2891/com.couchbase.cblite.test D/Database﹕ Uploading multipart request.  Revision: {doc2-1395049167512 #2-d2f4a185-3a9e-4c80-bb6e-7965834cab07}
+03-17 05:42:08.160    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: uploadMultipartRevision() calling asyncTaskStarted()
+03-17 05:42:08.170    2867-2891/com.couchbase.cblite.test D/Database﹕ Updating changes count from 0 -> 1
+03-17 05:42:08.170    2867-2891/com.couchbase.cblite.test D/LiteTestCase﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db] changed.  0 / 1
+03-17 05:42:08.170    2867-2891/com.couchbase.cblite.test D/LiteTestCase﹕ ReplicationFinishedObserver.changed called, but replicator still running, so ignore it
+03-17 05:42:08.180    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: asyncTaskStarted() called, asyncTaskCount: 1
+03-17 05:42:08.180    2867-2891/com.couchbase.cblite.test D/Database﹕ asyncTaskStarted() updated asyncTaskCount to 2
+03-17 05:42:08.220    2867-2889/com.couchbase.cblite.test D/Database﹕ execute() called with request: /db/doc2-1395049167512
+03-17 05:42:08.230    2867-2891/com.couchbase.cblite.test D/Database﹕ Updating changes count from 1 -> 2
+03-17 05:42:08.240    2867-2889/com.couchbase.cblite.test W/dalvikvm﹕ threadid=12: thread exiting with uncaught exception (group=0xb1a2bba8)
+03-17 05:42:08.250    2867-2891/com.couchbase.cblite.test D/LiteTestCase﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db] changed.  0 / 2
+03-17 05:42:08.250    2867-2891/com.couchbase.cblite.test D/LiteTestCase﹕ ReplicationFinishedObserver.changed called, but replicator still running, so ignore it
+03-17 05:42:08.270    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: asyncTaskStarted() called, asyncTaskCount: 2
+03-17 05:42:08.270    2867-2891/com.couchbase.cblite.test D/Database﹕ asyncTaskStarted() updated asyncTaskCount to 3
+03-17 05:42:08.280    2867-2889/com.couchbase.cblite.test E/AndroidRuntime﹕ FATAL EXCEPTION: pool-12-thread-1
+    Process: com.couchbase.cblite.test, PID: 2867
+    java.lang.RuntimeException: No responders matched for url pattern: /db/doc2-1395049167512
+            at com.couchbase.lite.replicator.CustomizableMockHttpClient.execute(CustomizableMockHttpClient.java:215)
+            at com.couchbase.lite.support.RemoteRequest.executeRequest(RemoteRequest.java:132)
+            at com.couchbase.lite.support.RemoteMultipartRequest.run(RemoteMultipartRequest.java:47)
+            at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1112)
+            at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:587)
+            at java.lang.Thread.run(Thread.java:841)
+03-17 05:42:08.300    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: processInbox() calling asyncTaskFinished()
+03-17 05:42:08.330    2867-2891/com.couchbase.cblite.test D/Database﹕ Pusher@b1d863b0[http://10.0.2.2:4984/db]|Thread[pool-11-thread-1,5,main]: asyncTaskFinished() called, asyncTaskCount: 3 numTasks: 1
+03-17 05:42:08.330    2867-2891/com.couchbase.cblite.test D/Database﹕ asyncTaskFinished() updated asyncTaskCount to: 2
+03-17 05:42:08.340    2867-2892/com.couchbase.cblite.test D/Database﹕ execute() called with request: /db/_bulk_docs
+03-17 05:42:08.340    2867-2892/com.couchbase.cblite.test D/Database﹕ fakeBulkDocs() called
+03-17 05:42:08.370      390-606/system_process W/ActivityManager﹕ Error in app com.couchbase.cblite.test running instrumentation ComponentInfo{com.couchbase.cblite.test/android.test.InstrumentationTestRunner}:
+03-17 05:42:08.370      390-606/system_process W/ActivityManager﹕ java.lang.RuntimeException
+03-17 05:42:08.370      390-606/system_process W/ActivityManager﹕ java.lang.RuntimeException: No responders matched for url pattern: /db/doc2-1395049167512
+03-17 05:42:08.390    2856-2856/? D/AndroidRuntime﹕ Shutting down VM
+03-17 05:42:08.430    2867-2873/com.couchbase.cblite.test W/jdwp﹕ Debugger is telling the VM to exit with code=-1
+03-17 05:42:08.430    2867-2873/com.couchbase.cblite.test I/dalvikvm﹕ GC lifetime allocation: 16270 bytes
+03-17 05:42:08.440    2856-2863/? D/jdwp﹕ Got wake-up signal, bailing out of select
+03-17 05:42:08.440    2856-2863/? D/dalvikvm﹕ Debugger has detached; object registry had 1 entries
+03-17 05:42:08.480    2867-2892/com.couchbase.cblite.test D/Database﹕ id: doc1-1395049167512
+03-17 05:42:08.480    2867-2892/com.couchbase.cblite.test D/Database﹕ rev: 2-e47ff599-bc17-4617-80cd-194da2070ffd
+03-17 05:42:08.550        50-50/? D/Zygote﹕ Process 2867 exited cleanly (255)
+03-17 05:42:08.680      390-606/system_process I/ActivityManager﹕ Force stopping com.couchbase.cblite.test appid=10055 user=0: finished inst
+03-17 05:42:08.680      390-606/system_process I/ActivityManager﹕ Killing 2867:com.couchbase.cblite.test/u0a55 (adj 0): stop com.couchbase.cblite.test
+
+
