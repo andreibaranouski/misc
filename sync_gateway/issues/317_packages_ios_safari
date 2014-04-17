@@ -1,0 +1,77 @@
+No.     Time           Source                Destination           Protocol Length Info
+      1 0.000000000    ::1                   ::1                   HTTP     478    GET /bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true HTTP/1.1 
+
+Frame 1: 478 bytes on wire (3824 bits), 478 bytes captured (3824 bits) on interface 0
+    Interface id: 0
+    Encapsulation type: NULL (15)
+    Arrival Time: Apr 17, 2014 23:18:14.788839000 FET
+    [Time shift for this packet: 0.000000000 seconds]
+    Epoch Time: 1397765894.788839000 seconds
+    [Time delta from previous captured frame: 0.000000000 seconds]
+    [Time delta from previous displayed frame: 0.000000000 seconds]
+    [Time since reference or first frame: 0.000000000 seconds]
+    Frame Number: 1
+    Frame Length: 478 bytes (3824 bits)
+    Capture Length: 478 bytes (3824 bits)
+    [Frame is marked: False]
+    [Frame is ignored: False]
+    [Protocols in frame: null:ipv6:tcp:http]
+    [Number of per-protocol-data: 1]
+    [Hypertext Transfer Protocol, key 0]
+    [Coloring Rule Name: HTTP]
+    [Coloring Rule String: http || tcp.port == 80]
+Null/Loopback
+    Family: IPv6 (30)
+Internet Protocol Version 6, Src: ::1 (::1), Dst: ::1 (::1)
+    0110 .... = Version: 6
+        [0110 .... = This field makes the filter "ip.version == 6" possible: 6]
+    .... 0000 0000 .... .... .... .... .... = Traffic class: 0x00000000
+        .... 0000 00.. .... .... .... .... .... = Differentiated Services Field: Default (0x00000000)
+        .... .... ..0. .... .... .... .... .... = ECN-Capable Transport (ECT): Not set
+        .... .... ...0 .... .... .... .... .... = ECN-CE: Not set
+    .... .... .... 1010 1010 1000 0001 1101 = Flowlabel: 0x000aa81d
+    Payload length: 434
+    Next header: TCP (6)
+    Hop limit: 64
+    Source: ::1 (::1)
+    Destination: ::1 (::1)
+    [Source GeoIP: Unknown]
+    [Destination GeoIP: Unknown]
+Transmission Control Protocol, Src Port: 51736 (51736), Dst Port: 59851 (59851), Seq: 1, Ack: 1, Len: 402
+    Source port: 51736 (51736)
+    Destination port: 59851 (59851)
+    [Stream index: 0]
+    Sequence number: 1    (relative sequence number)
+    [Next sequence number: 403    (relative sequence number)]
+    Acknowledgment number: 1    (relative ack number)
+    Header length: 32 bytes
+    Flags: 0x018 (PSH, ACK)
+    Window size value: 15036
+    [Calculated window size: 15036]
+    [Window size scaling factor: -1 (unknown)]
+    Checksum: 0x01ba [validation disabled]
+        [Good Checksum: False]
+        [Bad Checksum: False]
+    Options: (12 bytes), No-Operation (NOP), No-Operation (NOP), Timestamps
+        No-Operation (NOP)
+        No-Operation (NOP)
+        Timestamps: TSval 136844011, TSecr 136827397
+    [SEQ/ACK analysis]
+Hypertext Transfer Protocol
+    GET /bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true HTTP/1.1\r\n
+        [Expert Info (Chat/Sequence): GET /bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true HTTP/1.1\r\n]
+            [Message: GET /bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true HTTP/1.1\r\n]
+            [Severity level: Chat]
+            [Group: Sequence]
+        Request Method: GET
+        Request URI: /bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true
+        Request Version: HTTP/1.1
+    Host: localhost:59851\r\n
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n
+    Accept-Language: en-us\r\n
+    Connection: keep-alive\r\n
+    Accept-Encoding: gzip, deflate\r\n
+    User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/537.75.14\r\n
+    \r\n
+    [Full request URI: http://localhost:59851/bigtable/bigtable_0?rev=6-3bf1b3225b609f4537bb36f062d6fd5c&attachments=true]
+    [HTTP request 1/1]
